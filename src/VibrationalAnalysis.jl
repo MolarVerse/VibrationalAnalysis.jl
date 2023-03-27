@@ -1,8 +1,7 @@
 module VibrationalAnalysis
 
 using LinearAlgebra
-using DelimitedFiles
 
-include("read_rst.jl")
+include("read_files.jl")
 
 end # module VibrationalAnalysis
