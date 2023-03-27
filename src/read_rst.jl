@@ -2,6 +2,8 @@
 
 export read_rst
 
+include("massesdict.jl")
+
 """
     read_rst(rst_file::String)
 
@@ -23,9 +25,30 @@ function read_rst(rst_file::String)
         error("The restart file is empty.")
     end
 
-    # Checks if the file has "Box" included in the first, second or last LinearAlgebra
-    if rst_lines[1:3] == "Box" || rst_lines[4:6] == "Box" || rst_lines[end-2:end] == "Box"
-        error("The restart file is not in the correct format.")
-    end
-    
+    # Delete empty lines
+    rst_lines = filter(x -> x != "", rst_lines)
+
+    # Checks if a line begins with "Box" or "Step" and deletes these rst_lines
+    # Example:
+    # Step 0
+    # Box  0.0000000000000000E+00  0.0000000000000000E+00  0.0000000000000000E+00
+    # or 
+    # Box  0.0000000000000000E+00  0.0000000000000000E+00  0.0000000000000000E+00
+    # or 
+    #  Step 0
+    #   Box  0.0000000000000000E+00  0.0000000000000000E+00  0.0000000000000000E+00    
+    rst_lines = filter(x -> !occursin(r"\s*Box", x) && !occursin(r"\s*Step", x), rst_lines)
+
+    # Collect the atom names
+    atom_names = map(x -> split(x)[1], rst_lines)
+
+    # Collect the masses
+    atom_masses = (x->masses[lowercase(x)]).(atom_names)
+
+    # Collect the coordinates and convert them to Matrix{Float64}
+    atom_coords = map(x -> [parse(Float64, y) for y in split(x)[4:6]], rst_lines)
+    atom_coords = hcat(atom_coords...)
+
+    return atom_names, atom_masses, atom_coords
+
 end
