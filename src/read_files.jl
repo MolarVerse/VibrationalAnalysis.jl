@@ -73,11 +73,19 @@ function read_hessian(hessian_file::String)
     # Delete empty lines
     hessian_lines = filter(x -> x != "", readlines(hessian_file))
 
+    # Check if hessian_lines dont contain strings that are not numbers
+    for line in hessian_lines
+        for word in split(line)
+            if !occursin(r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?", word)
+                error("The hessian file contains strings that are not numbers.")
+            end
+        end
+    end
+
     # Convert it to a Matrix of Float64
     hessian = [parse.(Float64, split(x)) for x in hessian_lines]
     hessian = Matrix(hcat(hessian...)') # Transpose the matrix
     
-
     # Check if the hessian is a square matrix
     if size(hessian)[1] != size(hessian)[2]
         error("The hessian is not a square matrix.")

@@ -30,10 +30,17 @@ end
 end
 
 @testset "Read Hessian File Exceptions" begin
+    
+    # Test Hessian File Exceptions
     @test_throws ErrorException read_hessian("../data/not_a_file.dat")
     @test_throws ErrorException read_hessian("../data/empty_hessian.dat")
+    @test_throws ErrorException read_hessian("../data/test_nh3.rst")
+    
+    # Test Hessian file read correctly
     hessian_h2o = read_hessian("../data/hessian_h2o.dat")
     @test hessian_h2o isa Matrix{Float64}
     @test size(hessian_h2o) == (9, 9)
     @test read_hessian("../data/test_hessian.dat") == [2.0 3.0; 1.0 -2.0]
+
+
 end
