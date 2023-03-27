@@ -47,7 +47,7 @@ function read_rst(rst_file::String)
 
     # Collect the coordinates and convert them to Matrix{Float64}
     atom_coords = map(x -> [parse(Float64, y) for y in split(x)[4:6]], rst_lines)
-    atom_coords = hcat(atom_coords...)
+    atom_coords = Matrix(hcat(atom_coords...)') # Transpose the matrix
 
     return atom_names, atom_masses, atom_coords
 
