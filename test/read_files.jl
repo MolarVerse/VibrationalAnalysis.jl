@@ -1,5 +1,5 @@
-using Test
 using VibrationalAnalysis
+using Test
 
 # Test reading RST files src/read_files.jl
 
