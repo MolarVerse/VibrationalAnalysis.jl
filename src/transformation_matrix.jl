@@ -107,7 +107,7 @@ function transformation_matrix(coord::Matrix{Float64}, masses::Vector{Float64})
     
     # Combine the translational and rotational modes
     transformation[:, 1:3] = translation
-    transformation[:, 4:end] = rotation
+    transformation[:, 4:6] = rotation
 
     return transformation
 end
