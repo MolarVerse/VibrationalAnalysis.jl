@@ -51,9 +51,10 @@ function calculate_inertia_tensor(coord::Matrix{Float64}, masses::Vector{Float64
     
     # Initialize the inertia tensor
     inertia_tensor = zeros(3, 3)
-    # 
+
+    # Calculate the inertia tensor
     for i in 1:size(coord, 1)
-        inertia_tensor += masses[i] * (coord[i, :] * coord[i, :]' - coord[i, :] * coord[i, :])
+        inertia_tensor += masses[i] .* (coord[i, :] .* coord[i, :]' .- coord[i, :] .* coord[i, :])
     end
 
     return inertia_tensor
