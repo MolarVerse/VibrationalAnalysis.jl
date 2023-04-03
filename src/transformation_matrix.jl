@@ -1,5 +1,5 @@
 
-export translational_modes, rotational_modes, transformation_matrix
+export internal_coordinates
 
 """
     translational_modes(masses::Vector{Float64})
@@ -110,4 +110,53 @@ function transformation_matrix(coord::Matrix{Float64}, masses::Vector{Float64})
     transformation[:, 4:6] = rotation
 
     return transformation
+end
+
+"""
+    internal_coordinates(coord::Matrix{Float64}, masses::Vector{Float64}, hessian::Matrix{Float64})
+    
+    Calculate the internal coordinates of a molecule.
+    
+    Parameters
+    ----------
+    coord : Matrix{Float64}
+        The coordinates of the atoms.
+    masses : Vector{Float64}
+        The masses of the atoms.
+    hessian : Matrix{Float64}
+        The hessian matrix.
+    
+    Returns
+    -------
+    eigenvalues : Vector{Float64}
+        The eigenvalues of the hessian in internal coordinates.
+    eigenvectors_internal_normalized : Matrix{Float64}
+        The eigenvectors of the hessian in internal coordinates.
+    N : Vector{Float64}
+        The normalization factors.
+    
+"""
+
+function internal_coordinates(coord::Matrix{Float64}, masses::Vector{Float64}, hessian::Matrix{Float64})
+    # Calculate the transformation matrix
+    transformation = transformation_matrix(coord, masses)
+    # Gram-Schmidt orthogonalization
+    transformation = qr(transformation).QR
+    # Calculate the hessian in internal coordinates
+    internal_hessian = transformation' * hessian * transformation
+    # Calculate the eigenvalues and eigenvectors of the hessian in internal coordinates
+    eigenvalues, eigenvectors = eigen(internal_hessian)
+
+    # Calculate the masses matrix
+    masses_matrix = diagm(0 => [1/sqrt(i) for i in masses for j in 1:3])
+    # Calculate the eigenvectors in internal coordinates
+    eigenvectors_internal = masses_matrix * transformation * eigenvectors
+
+    # Normalize Vectors
+    N = sqrt.(1 ./ sum(eigenvectors_internal.^2, dims=1))
+    # Normalize the eigenvectors
+    eigenvectors_internal_normalized = eigenvectors_internal .* N
+
+
+    return eigenvalues, eigenvectors_internal_normalized, N
 end
