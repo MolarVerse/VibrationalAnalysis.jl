@@ -79,8 +79,7 @@ D[:, 6] = D6
 ### Gram-Schmidt Diagonalization
 D_gs = qr(D).Q
 
-### Transform the Hessian to interaln coordinates and diagonalize
-### Transform the Hessian to interaln coordinates and diagonalize
+### Transform the Hessian to internal coordinates and diagonalize
 f_int= D_gs' * H_sym_w * D_gs
 eigVal, eigVec = eigen(f_int)
 M = Diagonal(1 ./ sqrt.(masses_mat))
