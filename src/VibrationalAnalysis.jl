@@ -5,5 +5,6 @@ include("symmetrize.jl")
 include("coordinate_transform.jl")
 include("transformation_matrix.jl")
 include("observables.jl")
+include("write_out.jl")
 
 end # module VibrationalAnalysis
