@@ -4,5 +4,6 @@ include("read_files.jl")
 include("symmetrize.jl")
 include("coordinate_transform.jl")
 include("transformation_matrix.jl")
+include("observables.jl")
 
 end # module VibrationalAnalysis
