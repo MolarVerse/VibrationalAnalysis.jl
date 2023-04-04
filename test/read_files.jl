@@ -8,8 +8,7 @@ using Test
     @test_throws ErrorException read_rst("../data/empty.rst")
 end
 
-@testset "Read Restart File" begin
-
+@testset "Read Restart File - h2o" begin
     # Test H2O Restart File
     atom_names, atom_masses, atom_coords = read_rst("../data/test_h2o.rst")
     @test atom_names == ["o", "h", "h"]
@@ -20,7 +19,9 @@ end
         0.43396012267 0.59193103593 0.66981595463
         0.68120631717 -0.49583217141 -0.52277201300
     ]
+end
 
+@testset "Read Restart File - nh3" begin
     # Test NH3 Restart File
     atom_names, atom_masses, atom_coords = read_rst("../data/test_nh3.rst")
     @test atom_names == ["N", "H", "H", "H"]
@@ -31,7 +32,6 @@ end
         -0.832947 -0.480902 -0.198082
         0.832947 -0.480902 -0.198082
     ]
-
 end
 
 @testset "Read Hessian File Exceptions" begin
