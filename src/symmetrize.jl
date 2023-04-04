@@ -43,7 +43,7 @@ function mass_weighted_hessian(hessian::String)
     masses_matrix = (masses_repeat * masses_repeat').^(1/2)
 
     # Mass weight the hessian
-    hessian = hessian ./ masses_mat
+    hessian = hessian ./ masses_matrix
 
     return hessian
 end
