@@ -1,5 +1,5 @@
 
-export center_to_com, calculate_inertia_tensor
+export center_to_com, inertia_tensor
 
 """
     center_to_com(coord::Matrix{Float64}, masses::Vector{Float64})
@@ -29,7 +29,7 @@ function center_to_com(coord::Matrix{Float64}, masses::Vector{Float64})
 end
 
 """
-    calculate_inertia_tensor(coord::Matrix{Float64}, masses::Vector{Float64})
+    inertia_tensor(coord::Matrix{Float64}, masses::Vector{Float64})
 
 Calculate the inertia tensor.
     
@@ -47,15 +47,21 @@ Calculate the inertia tensor.
     
     """
 
-function calculate_inertia_tensor(coord::Matrix{Float64}, masses::Vector{Float64})
+function inertia_tensor(coord::Matrix{Float64}, masses::Vector{Float64})
     
-    # Initialize the inertia tensor
-    inertia_tensor = zeros(3, 3)
+    # center the coordinates to the center of mass
+    coord = center_to_com(coord, masses)
 
     # Calculate the inertia tensor
-    for i in 1:size(coord, 1)
-        inertia_tensor += masses[i] .* (coord[i, :] .* coord[i, :]' .- coord[i, :] .* coord[i, :])
-    end
+    x = coord[:, 1]
+    y = coord[:, 2]
+    z = coord[:, 3]
+    Ixx = sum(masses .* (y.^2 + z.^2))
+    Iyy = sum(masses .* (x.^2 + z.^2))
+    Izz = sum(masses .* (x.^2 + y.^2))
+    Ixy = - sum(masses .* (x .* y))
+    Ixz = - sum(masses .* (x .* z))
+    Iyz = - sum(masses .* (y .* z))
 
-    return inertia_tensor
+    return [Ixx Ixy Ixz; Ixy Iyy Iyz; Ixz Iyz Izz]
 end
