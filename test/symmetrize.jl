@@ -16,8 +16,8 @@ end
 @testset "Mass-weighted hessian" begin
         # Test Mass-weighted hessian
 
-        hessian = read_hessian("../data/hessian.dat")
-        _, _ , atom_masses = read_rst("../data/rst7.rst")
+        hessian = read_hessian("../data/test_hessian_h2o.dat")
+        _, atom_masses , _ = read_rst("../data/test_h2o.rst")
         
         mass_weight_hessian = mass_weighted_hessian(hessian, atom_masses)
         @test mass_weight_hessian isa Matrix{Float64}
