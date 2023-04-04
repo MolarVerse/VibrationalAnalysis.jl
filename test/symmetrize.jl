@@ -12,3 +12,13 @@ using Test
     @test symmetrize_multiplication([2.0 3.0; 1.0 -2.0]) == [2.1213203435596424 0.7071067811865476; 0.7071067811865475 3.5355339059327373]
 
 end
+
+@testset "Mass-weighted hessian" begin
+        # Test Mass-weighted hessian
+
+        hessian = read_hessian("../data/hessian.dat")
+        _, _ , atom_masses = read_rst("../data/rst7.rst")
+        
+        mass_weight_hessian = mass_weighted_hessian(hessian, atom_masses)
+        @test mass_weight_hessian isa Matrix{Float64}
+end

@@ -31,14 +31,12 @@ end
 Mass weight a Hessian matrix.
 """
 
-function mass_weighted_hessian(hessian::String)
-    # Read the hessian
-    hessian = read_hessian(hessian)
-    # Read the rst file
+function mass_weighted_hessian(hessian::Matrix{Float64}, atom_masses::Vector{Float64})
+    # Symmetrize the hessian
     hessian = symmetrize_multiplication(hessian)
     
     # Create 3N x 3N matrix of masses
-    masses_repeat = repeat(masses, inner=3)
+    masses_repeat = repeat(atom_masses, inner=3)
     # Matrix of masses \sqrt{m_i m_j}
     masses_matrix = (masses_repeat * masses_repeat').^(1/2)
 
