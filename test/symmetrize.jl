@@ -21,4 +21,11 @@ end
         
         mass_weight_hessian = mass_weighted_hessian(hessian, atom_masses)
         @test mass_weight_hessian isa Matrix{Float64}
+
+        # Test Symmetrize Multiplication
+        hessian = [4.0 2.0 0.5; 2.0 4.0 0.0; 0.5 0.0 4.0]
+        atom_masses = [2.0]
+        @test mass_weighted_hessian(hessian, atom_masses) ≈ [2.0 1.0 0.25; 1.0 2.0 0.0; 0.25 0.0 2.0] atol=1e-5
+        @test mass_weighted_hessian_add(hessian, atom_masses) == [2.0 1.0 0.25; 1.0 2.0 0.0; 0.25 0.0 2.0] 
+
 end

@@ -1,6 +1,6 @@
 using LinearAlgebra
 
-export symmetrize_addition, symmetrize_multiplication, mass_weighted_hessian
+export symmetrize_addition, symmetrize_multiplication, mass_weighted_hessian, mass_weighted_hessian_add
 
 """
     symmetrize_addition(hessian::Matrix{Float64})
@@ -28,12 +28,35 @@ end
 """
     mass_weight_hessian(hessian::Matrix{Float64}, atom_masses::Vector{Float64})
 
-Mass weight a Hessian matrix.
+Mass weight a Hessian matrix using matrix multiplication for symmetrization.
+
 """
 
 function mass_weighted_hessian(hessian::Matrix{Float64}, atom_masses::Vector{Float64})
     # Symmetrize the hessian
     hessian = symmetrize_multiplication(hessian)
+    
+    # Create 3N x 3N matrix of masses
+    masses_repeat = repeat(atom_masses, inner=3)
+    # Matrix of masses \sqrt{m_i m_j}
+    masses_matrix = (masses_repeat * masses_repeat').^(1/2)
+
+    # Mass weight the hessian
+    hessian = hessian ./ masses_matrix
+
+    return hessian
+end
+
+"""
+    mass_weight_hessian_add(hessian::Matrix{Float64}, atom_masses::Vector{Float64})
+
+Mass weight a Hessian matrix using symmetrize by addition.
+
+"""
+
+function mass_weighted_hessian_add(hessian::Matrix{Float64}, atom_masses::Vector{Float64})
+    # Symmetrize the hessian
+    hessian = symmetrize_addition(hessian)
     
     # Create 3N x 3N matrix of masses
     masses_repeat = repeat(atom_masses, inner=3)
