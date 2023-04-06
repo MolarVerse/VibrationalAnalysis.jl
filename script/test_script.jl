@@ -21,6 +21,8 @@ v, V = eigen(H)
 
 H_sym = V * Diagonal(sqrt.(abs.(v))) * V'
 
+# H_sym = (hess + hess') / 2
+
 H_sym_w = H_sym ./ masses_mat
 
 ### center of mass
@@ -29,7 +31,6 @@ Rcm = sum(masses .* coord, dims = 1) ./ sum(masses)
 
 ### Shift coordinates to center of mass frame
 R = coord .- Rcm
-
 ### Inertia tensor
 x = R[:, 1]
 y = R[:, 2]
@@ -79,20 +80,37 @@ D[:, 6] = D6
 ### Gram-Schmidt Diagonalization
 D_gs = qr(D).Q
 
-### Transform the Hessian to internal coordinates and diagonalize
+### Transform the Hessian to interaln coordinates and diagonalize
+### Transform the Hessian to interaln coordinates and diagonalize
 f_int= D_gs' * H_sym_w * D_gs
 eigVal, eigVec = eigen(f_int)
-M = Diagonal(1 ./ sqrt.(masses_mat))
-Icart = M * D_gs * eigVec
+M = Diagonal(1 ./ sqrt.(masses_repeat))
+Icart = D_gs * M * eigVec
 
 # Normalize Vectors
 N = sqrt.(1 ./ sum(Icart.^2, dims=1))
 Inormal = Icart .* N
 
+### Check if the vectors are orthogonal to each other
+# for i in 1:size(Inormal)[2]
+#     for j in 1:size(Inormal)[2]
+#         println("i: $i, j: $j, dot: ", dot(Inormal[:, i], Inormal[:, j]))
+#     end
+# end
+
+### Write out the vectors
+# for i in 1:size(Inormal)[2]
+#     println("$(Inormal[i, 1])   $(Inormal[i,4])   " , Inormal[i, 1] * Inormal[i, 4])
+# end
+# println("\n Sum:   " , sum(Inormal[:, 1] .* Inormal[:, 4]))
+
+# println()
+# writedlm(stdout, Inormal)
+
 ### Conversion kcal Å^-2 g^-1 to s^-2: 4184 * 10^23 (4184 J/kcal * 10^20 Å^2 / m^2 * 1000 g / kg)
 eigenValScaled = eigVal * 4184 * 1.0E23
 ### frequency
-ω = sqrt.(eigenValScaled)
+ω = sqrt.(complex(eigenValScaled))
 ### wavenumber
 ν_tilde = 1/(2π * c) * ω
 
@@ -120,16 +138,17 @@ for i in 1:size(Inormal)[1]
 end
 
 #### Print intensities
-writedlm(stdout, hcat(ν_tilde, intensities))
+# writedlm(stdout, hcat(ν_tilde, intensities))
 
 ### Print all modes
 for i in 1:size(Inormal)[1]
 
     modeIndex = i
-    file = open("mode_jl_$modeIndex.xyz", "w")
+    file = open("mode_$modeIndex.xyz", "w")
+    mode_file = open("vec_$modeIndex.txt", "w")
 
     mode = reshape(Inormal[:, modeIndex], 3, :)'
-
+    writedlm(mode_file, mode)
     for (i,α) in enumerate(-0.25:0.01:0.25)
         println(file, nAtoms, "\n")
 
@@ -138,7 +157,7 @@ for i in 1:size(Inormal)[1]
             join(R[i, :] .+ (α * mode[i,:]), "   " ))
         end
     end
-
+    close(mode_file)
     close(file)
 
 end
