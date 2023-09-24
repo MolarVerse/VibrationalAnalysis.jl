@@ -30,7 +30,7 @@ function rotational_modes(coord::Matrix{Float64}, masses::Vector{Float64})
     # Translate the coordinates to the center of mass
     coord = center_to_com(coord, masses)
     # Calculate the inertia tensor
-    inertia_tensor = calculate_inertia_tensor(coord, masses)
+    inertia_tensor = inertia_tensor(coord, masses)
     # Calculate the eigenvalues and eigenvectors of the inertia tensor
     _ , eigenvectors = eigen(inertia_tensor)
     
