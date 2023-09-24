@@ -5,27 +5,9 @@ export write_modes
     write_modes(eigenvector_internal::Matrix{Float64}, coord::Matrix{Float64}, atom_names::Vector{String})
 
 Write the modes to a file.
-
-    Parameters
-    ----------
-    eigenvector_internal : Matrix{Float64}
-        The eigenvectors of the hessian in internal coordinates.
-    coord : Matrix{Float64}
-        The coordinates of the atoms.
-    atom_names : Vector{String}
-        The names of the atoms.
-    
-    Keyword Arguments
-    -----------------
-    filename : String
-        The name of the file.
-
-    Returns
-    -------
-    Nothing
 """
 
-function write_modes(eigenvector_internal::Matrix{Float64}, coord::Matrix{Float64}, atom_names::Vector{String}; filename="modes")
+function write_modes(eigenvector_internal::Matrix{Float64}, coord::Matrix{Float64}, atom_names::Vector{String}; filename="modes", amplitude=0.25, step=0.01)
     for i in 1:size(eigenvector_internal)[1]
 
         # Open file
@@ -36,7 +18,7 @@ function write_modes(eigenvector_internal::Matrix{Float64}, coord::Matrix{Float6
     
         mode = reshape(eigenvector_internal[:, i], 3, :)'
     
-        for (i,α) in enumerate(-0.25:0.01:0.25)
+        for (i,α) in enumerate(-amplitude:step:amplitude)
             println(file, n_atoms, "\n")
     
             for i in 1:n_atoms
@@ -51,28 +33,12 @@ function write_modes(eigenvector_internal::Matrix{Float64}, coord::Matrix{Float6
 end
 
 """
-    write_wavenumber_frequency(wavenumber::Vector{Float64}, frequency::Vector{Float64})
+    write_wavenumber_frequency(wavenumbers::Vector{Float64}, intensities::Vector{Float64})
 
-Write the wavenumbers and frequencies to a file.
-
-    Parameters
-    ----------
-    wavenumber : Vector{Float64}
-        The wavenumbers.
-    frequency : Vector{Float64}
-        The frequencies.
-    
-    Keyword Arguments
-    -----------------
-    filename : String
-        The name of the file.
-
-    Returns
-    -------
-    Nothing
+Write the wavenumbers and intensities to a file.
 """
 
-function write_wavenumber_frequency(wavenumber::Vector{Float64}, frequency::Vector{Float64}; filename=stdout)
+function write_wavenumbers_intensities(wavenumbers::Vector{Float64}, intensities::Vector{Float64}; filename=stdout)
     
     # Open file
     if filename != stdout
@@ -81,11 +47,10 @@ function write_wavenumber_frequency(wavenumber::Vector{Float64}, frequency::Vect
         file = filename
     end
 
+    println(file, "Wavenumbers (cm-1)    Intensities (a.u.)")
 
-    println(file, "Wavenumber (cm-1)    Frequency (a.u.)")
-
-    for i in 1:length(wavenumber)
-        println(file, wavenumber[i], "    ", frequency[i])
+    for i in 1:length(wavenumbers)
+        println(file, wavenumbers[i], "    ", intensities[i])
     end
 
     # Close file

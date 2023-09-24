@@ -4,18 +4,7 @@ export internal_coordinates
 """
     translational_modes(masses::Vector{Float64})
     
-    Calculate the translational modes of a molecule.
-    
-    Parameters
-    ----------
-    masses : Vector{Float64}
-        The masses of the atoms.
-    
-    Returns
-    -------
-    translation : Matrix{Float64}
-        The translational modes of the molecule.
-    
+    Calculate the translational modes of a molecule.   
 """
 
 function translational_modes(masses::Vector{Float64})
@@ -34,20 +23,7 @@ end
 """
     rotational_modes(coord::Matrix{Float64}, masses::Vector{Float64})
     
-    Calculate the rotational modes of a molecule.
-    
-    Parameters
-    ----------
-    coord : Matrix{Float64}
-        The coordinates of the atoms.
-    masses : Vector{Float64}
-        The masses of the atoms.
-    
-    Returns
-    -------
-    rotation : Matrix{Float64}
-        The rotational modes of the molecule.
-    
+Calculate the rotational modes of a molecule.    
 """
 
 function rotational_modes(coord::Matrix{Float64}, masses::Vector{Float64})
@@ -79,20 +55,7 @@ end
 """
     transformation_matrix(coord::Matrix{Float64}, masses::Vector{Float64})
     
-    Calculate the transformation matrix.
-    
-    Parameters
-    ----------
-    coord : Matrix{Float64}
-        The coordinates of the atoms.
-    masses : Vector{Float64}
-        The masses of the atoms.
-    
-    Returns
-    -------
-    transformation : Matrix{Float64}
-        The transformation matrix.
-    
+    Calculate the transformation matrix.  
 """
 
 function transformation_matrix(coord::Matrix{Float64}, masses::Vector{Float64})
@@ -115,26 +78,7 @@ end
 """
     internal_coordinates(coord::Matrix{Float64}, masses::Vector{Float64}, hessian::Matrix{Float64})
     
-    Calculate the internal coordinates of a molecule.
-    
-    Parameters
-    ----------
-    coord : Matrix{Float64}
-        The coordinates of the atoms.
-    masses : Vector{Float64}
-        The masses of the atoms.
-    hessian : Matrix{Float64}
-        The hessian matrix.
-    
-    Returns
-    -------
-    eigenvalues : Vector{Float64}
-        The eigenvalues of the hessian in internal coordinates.
-    eigenvectors_internal_normalized : Matrix{Float64}
-        The eigenvectors of the hessian in internal coordinates.
-    N : Vector{Float64}
-        The normalization factors.
-    
+    Calculate the internal coordinates of a molecule.    
 """
 
 function internal_coordinates(coord::Matrix{Float64}, masses::Vector{Float64}, hessian::Matrix{Float64})

@@ -5,19 +5,6 @@ export center_to_com, inertia_tensor
     center_to_com(coord::Matrix{Float64}, masses::Vector{Float64})
 
 Translate the coordinates to the center of mass.
-    
-    Parameters
-    ----------
-    coord : Matrix{Float64}
-        The coordinates of the atoms.
-    masses : Vector{Float64}
-        The masses of the atoms.
-    
-    Returns
-    -------
-    coord : Matrix{Float64}
-        The coordinates of the atoms translated to the center of mass.
-
 """
 
 function center_to_com(coord::Matrix{Float64}, masses::Vector{Float64})
@@ -31,21 +18,8 @@ end
 """
     inertia_tensor(coord::Matrix{Float64}, masses::Vector{Float64})
 
-Calculate the inertia tensor.
-    
-        Parameters
-        ----------
-        coord : Matrix{Float64}
-            The coordinates of the atoms.
-        masses : Vector{Float64}
-            The masses of the atoms.
-    
-        Returns
-        -------
-        inertia_tensor : Matrix{Float64}
-            The inertia tensor.
-    
-    """
+Calculate the inertia tensor.    
+"""
 
 function inertia_tensor(coord::Matrix{Float64}, masses::Vector{Float64})
     
