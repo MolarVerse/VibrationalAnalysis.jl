@@ -10,7 +10,7 @@ end
 
 @testset "Read Restart File - h2o" begin
     # Test H2O Restart File
-    atom_names, atom_masses, atom_coords = read_rst("../data/test_h2o.rst")
+    atom_names, atom_masses, atom_coords,  = read_rst("../data/test_h2o.rst")
     @test atom_names == ["o", "h", "h"]
     @test atom_masses == [15.9994, 1.00794, 1.00794]
     @test atom_coords isa Matrix{Float64}
@@ -23,7 +23,7 @@ end
 
 @testset "Read Restart File - nh3" begin
     # Test NH3 Restart File
-    atom_names, atom_masses, atom_coords = read_rst("../data/test_nh3.rst")
+    atom_names, atom_masses, atom_coords,  = read_rst("../data/test_nh3.rst")
     @test atom_names == ["N", "H", "H", "H"]
     @test atom_masses == [14.0067, 1.00794, 1.00794, 1.00794]
     @test atom_coords == [

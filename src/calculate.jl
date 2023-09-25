@@ -3,7 +3,7 @@ export calculate
 function calculate(rst_file::String, hessian_file::String)
 
     # Read restart restart file 
-    atom_names, atom_masses, atom_coords = read_rst(rst_file)
+    atom_names, atom_masses, atom_coords, atom_types = read_rst(rst_file)
 
     # Read the hessian
     hessian = read_hessian(hessian_file)
