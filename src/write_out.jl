@@ -7,16 +7,16 @@ export write_modes
 Write the modes to a file.
 """
 
-function write_modes(eigenvector_internal::Matrix{Float64}, coord::Matrix{Float64}, atom_names::Vector{String}; filename="modes", amplitude=0.25, step=0.01)
-    for i in 1:size(eigenvector_internal)[1]
+function write_modes(eigenvectors_internal_normalized::Matrix{Float64}, atom_coords::Matrix{Float64}, atom_names::Vector{String}; filename="modes", amplitude=0.25, step=0.01)
+    for i in 1:size(eigenvectors_internal_normalized)[1]
 
         # Open file
         file = open("$filename_$i.xyz", "w")
 
         # Number of atoms in the molecule
-        n_atoms = size(coord)[1]
+        n_atoms = size(atom_coords)[1]
     
-        mode = reshape(eigenvector_internal[:, i], 3, :)'
+        mode = reshape(eigenvectors_internal_normalized[:, i], 3, :)'
     
         for (i,α) in enumerate(-amplitude:step:amplitude)
             println(file, n_atoms, "\n")

@@ -81,13 +81,13 @@ end
     Calculate the internal coordinates of a molecule.    
 """
 
-function internal_coordinates(coord::Matrix{Float64}, masses::Vector{Float64}, hessian::Matrix{Float64})
+function internal_coordinates(coord::Matrix{Float64}, masses::Vector{Float64}, hessian_mw::Matrix{Float64})
     # Calculate the transformation matrix
     transformation = transformation_matrix(coord, masses)
     # Gram-Schmidt orthogonalization
     transformation = qr(transformation).QR
     # Calculate the hessian in internal coordinates
-    internal_hessian = transformation' * hessian * transformation
+    internal_hessian = transformation' * hessian_mw * transformation
     # Calculate the eigenvalues and eigenvectors of the hessian in internal coordinates
     eigenvalues, eigenvectors = eigen(internal_hessian)
 
@@ -97,10 +97,10 @@ function internal_coordinates(coord::Matrix{Float64}, masses::Vector{Float64}, h
     eigenvectors_internal = masses_matrix * transformation * eigenvectors
 
     # Normalize Vectors
-    N = sqrt.(1 ./ sum(eigenvectors_internal.^2, dims=1))
+    normalization = sqrt.(1 ./ sum(eigenvectors_internal.^2, dims=1))
     # Normalize the eigenvectors
-    eigenvectors_internal_normalized = eigenvectors_internal .* N
+    eigenvectors_internal_normalized = eigenvectors_internal .* normalization
 
 
-    return eigenvalues, eigenvectors_internal_normalized, N
+    return eigenvalues, eigenvectors_internal_normalized, normalization
 end

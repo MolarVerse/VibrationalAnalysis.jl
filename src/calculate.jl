@@ -12,15 +12,15 @@ function calculate(rst_file::String, hessian_file::String)
     hessian_mw = mass_weighted_hessian(hessian, atom_masses)
 
     # Transforme in internal coordinates
-    eigenvalues, eigenvectors_internal_normalized, N = internal_coordinates(atom_coords, atom_masses, hessian_mw)
+    eigenvalues, eigenvectors_internal_normalized, normalization = internal_coordinates(atom_coords, atom_masses, hessian_mw)
 
     #TODO: Build read moldescriptor or charges reader
     atom_charges = [-2.0, 1.0, 1.0]
 
     # Calculate observables
     wavenumbers = wavenumber_kcal(eigenvalues)
-    intensities = infrared_intensity(N, atom_coords, atom_charges)
-    reduced_mass = reduced_mass(N)
+    intensities = infrared_intensity(normalization, atom_coords, atom_charges)
+    reduced_mass = reduced_mass(normalization)
     force_constant = force_constant(wavenumbers, reduced_mass)
     
     # Write the modes as xyz-files
