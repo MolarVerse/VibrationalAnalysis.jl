@@ -47,7 +47,7 @@ function write_wavenumbers_intensities(wavenumbers::Vector{Float64}, intensities
         file = filename
     end
 
-    println(file, "Wavenumbers (cm-1)    Intensities (a.u.)")
+    println(file, "Wavenumbers (cm-1)    Intensities (km mol-1)")
 
     for i in 1:length(wavenumbers)
         println(file, wavenumbers[i], "    ", intensities[i])

@@ -66,14 +66,13 @@ end
 Calculate the infrared intensity from the normalization vector, the coordinates and the charges.
 """
 
-function infrared_intensity(normalization::Vector{Float64}, atom_coords::Matrix{Float64}, atom_charges::Vector{Float64})
+function infrared_intensity(normalization::Vector{Float64}, atom_charges::Vector{Float64})
+    reduced_mass = reduced_mass(normalization)
     intensities = []
     for i in 1:size(normalization)[1]
         eigenvector = reshape(normalization[:, i], 3, :)'
-        mu1 = sum((atom_coords .+ 0.05eigenvector) .* atom_charges, dims=1)
-        mu2 = sum((atom_coords .- 0.05eigenvector) .* atom_charges, dims=1)
-        delta_mu = mu1 - mu2 # norm
-        intensity = sum((delta_mu ./ 2norm(0.1eigenvector)).^2)
+        # http://thiele.ruc.dk/~spanget/help/g09/k_constants.html
+        intensity = sum((sum(eigenvector .* atom_charges, dims=1) / 0.2081943  / norm(eigenvector)).^2 / reduced_mass[i] * 42.2561)
         push!(intensities, intensity)
     end
     return intensities

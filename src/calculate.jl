@@ -19,7 +19,7 @@ function calculate(rst_file::String, hessian_file::String)
 
     # Calculate observables
     wavenumbers = wavenumber_kcal(eigenvalues)
-    intensities = infrared_intensity(normalization, atom_coords, atom_charges)
+    intensities = infrared_intensity(normalization, atom_charges)
     reduced_mass = reduced_mass(normalization)
     force_constant = force_constant(wavenumbers, reduced_mass)
     
