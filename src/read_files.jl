@@ -28,15 +28,7 @@ function read_rst(rst_file::String)
     # Delete empty lines
     rst_lines = filter(x -> x != "", rst_lines)
 
-    # Checks if a line begins with "Box" or "Step" and deletes these rst_lines
-    # Example:
-    # Step 0
-    # Box  0.0000000000000000E+00  0.0000000000000000E+00  0.0000000000000000E+00
-    # or 
-    # Box  0.0000000000000000E+00  0.0000000000000000E+00  0.0000000000000000E+00
-    # or 
-    #  Step 0
-    #   Box  0.0000000000000000E+00  0.0000000000000000E+00  0.0000000000000000E+00    
+    # Checks if a line begins with "Box" or "Step" and deletes these rst_lines   
     rst_lines = filter(x -> !occursin(r"\s*Box", x) && !occursin(r"\s*Step", x), rst_lines)
 
     # Collect the atom names
@@ -121,6 +113,19 @@ function read_moldescriptor(moldescriptor_file::String, atom_names::Vector{Strin
 
     # Strip the moldescriptor lines that are not lines of 3 strings
     moldescriptor_lines = filter(x -> length(split(x)) == 3, moldescriptor_lines)
+
+    # Check if the moldescriptor lines are empty
+    if length(moldescriptor_lines) == 0
+        error("The moldescriptor file is not a moldescriptor file.")
+    end
+
+    # Check if the moldescriptor file contains only lines of 3 strings
+    # First is a string, second is an integer and third is a float
+    for line in moldescriptor_lines
+        if !(occursin(r"\w+", split(line)[1]) && occursin(r"\d+", split(line)[2]) && occursin(r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?", split(line)[3]))
+            error("The moldescriptor file contains lines that are not of the form: string integer float.")
+        end
+    end
 
     mol_types = Vector()
     i = 1
