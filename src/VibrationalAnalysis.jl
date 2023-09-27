@@ -1,5 +1,7 @@
 module VibrationalAnalysis
 
+using LinearAlgebra
+
 include("read_files.jl")
 include("coordinate_transform.jl")
 include("symmetrize.jl")
