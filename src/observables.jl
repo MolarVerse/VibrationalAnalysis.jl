@@ -41,12 +41,12 @@ function wavenumber_kcal(eigenvalues::Vector{Float64})
 end
 
 """
-    reduced_mass(normalization::Vector{Float64})
+    reduced_mass(normalization)
 
 Calculate the reduced mass from the normalization vector.
 """
 
-function reduced_mass(normalization::Vector{Float64})
+function reduced_mass(normalization)
     return normalization.^2
 end
 
@@ -56,24 +56,22 @@ end
 Calculate the force constant from the wavenumbers and the reduced mass.
 """
 
-function force_constant(wavenumbers::Vector{Float64}, reduced_mass::Vector{Float64})
+function force_constant(wavenumbers::Vector{Float64}, reduced_mass)
     return wavenumbers.^2 .* reduced_mass' / 6.022 / 1E28
 end
 
 """
-    infrared_intensity(normalization::Vector{Float64}, coordinates::Matrix{Float64}, charges::Vector{Float64})
+    infrared_intensity(eigenvectors_internal_normalized::Matrix{Float64}, coordinates::Matrix{Float64}, charges::Vector{Float64})
 
-Calculate the infrared intensity from the normalization vector, the coordinates and the charges.
+Calculate the infrared intensity from the normalization eigen matrix, the coordinates and the charges.
 """
 
-function infrared_intensity(normalization::Vector{Float64}, coordinates::Matrix{Float64}, charges::Vector{Float64})
+function infrared_intensity(eigenvectors_internal_normalized::Matrix{Float64}, atom_charges::Vector{Float64}, reduced_masses)
     intensities = []
-    for i in 1:size(normalization)[1]
-        eigenvector = reshape(normalization[:, i], 3, :)'
-        mu1 = sum((coordinates .+ 0.05eigenvector) .* charges, dims=1)
-        mu2 = sum((coordinates .- 0.05eigenvector) .* charges, dims=1)
-        delta_mu = mu1 - mu2 # norm
-        intensity = sum((delta_mu ./ 2norm(0.1eigenvector)).^2)
+    for i in 1:size(eigenvectors_internal_normalized)[1]
+        eigenvector = reshape(eigenvectors_internal_normalized[:, i], 3, :)'
+        # http://thiele.ruc.dk/~spanget/help/g09/k_constants.html
+        intensity = sum((sum(eigenvector .* atom_charges, dims=1) / 0.2081943  / norm(eigenvector)).^2 / reduced_masses[i] * 42.2561)
         push!(intensities, intensity)
     end
     return intensities
