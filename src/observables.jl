@@ -57,7 +57,7 @@ Calculate the force constant from the wavenumbers and the reduced mass.
 """
 
 function force_constant(wavenumbers::Vector{Float64}, reduced_mass)
-    return wavenumbers.^2 .* reduced_mass' / 6.022 / 1E28
+    return wavenumbers.^2 .* reduced_mass / 6.022 / 1E28
 end
 
 """
