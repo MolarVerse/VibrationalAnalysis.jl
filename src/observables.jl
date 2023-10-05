@@ -15,9 +15,9 @@ function wavenumber_dftb(eigenvalues::Vector{Float64})
     omega = sqrt.(eigenvalues * 2625500.2 * (0.188972598857892E+11)^2)
 
     # Convert wavenumbers in s^-2 to wavenumbers in cm^-1 : 1/(2π * c) * ω
-    wavenumbers = 1/(2π * 299792458) * omega
+    wavenumbers = 1/(2π * 2.99792458e10) * omega
 
-    return wavenumbers
+    return wavenumbers, omega
 end
 
 
@@ -32,12 +32,12 @@ function wavenumber_kcal(eigenvalues::Vector{Float64})
     
     # Convert eigenvalues in kcal Å^-2 g^-1 to wavenumbers in s^-2: 
     #   4184 * 10^23 (4184 J/kcal * 10^20 Å^2 / m^2 * 1000 g / kg)
-    omega = sqrt.(eigenvalues * 4184.0 * 10e23)
+    omega = sqrt.(eigenvalues * 4184.0 * 1.0E23)
 
     # Convert wavenumbers in s^-2 to wavenumbers in cm^-1 : 1/(2π * c) * ω
-    wavenumbers = 1/(2π * 299792458) * omega
+    wavenumbers = 1/(2π * 2.99792458e10) * omega
 
-    return wavenumbers
+    return wavenumbers, omega
 end
 
 """
@@ -47,7 +47,8 @@ Calculate the reduced mass from the normalization vector.
 """
 
 function reduced_mass(normalization)
-    return normalization.^2
+    red_mass = normalization .^ 2
+    return red_mass[:] # convert to vector
 end
 
 """
@@ -56,8 +57,10 @@ end
 Calculate the force constant from the wavenumbers and the reduced mass.
 """
 
-function force_constant(wavenumbers::Vector{Float64}, reduced_mass)
-    return wavenumbers.^2 .* reduced_mass / 6.022 / 1E28
+function force_constant(omega::Vector{Float64}, reduced_mass::Vector{Float64})
+    # Conversion g mol^-1 s^-2 to mdyn Å^-1: / 6.022 / 1E23 (mol) / 1E3 (kg/g) / 1E2 (mdyn/Å / N/m)
+    force_const =  omega'.^2 .* reduced_mass / 6.022 / 1E28
+    return force_const[:] # convert to vector
 end
 
 """

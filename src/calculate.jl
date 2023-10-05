@@ -18,11 +18,13 @@ function calculate(rst_file::String, hessian_file::String, moldescriptor_file::S
     atom_charges = read_moldescriptor(moldescriptor_file, atom_names, atom_types)
 
     # Calculate observables
-    wavenumbers = wavenumber_kcal(eigenvalues)
+    wavenumbers, omega = wavenumber_kcal(eigenvalues)
     reduced_masses = reduced_mass(normalization)
     intensities = infrared_intensity(eigenvectors_internal_normalized, atom_charges, reduced_masses)
-    force_constants = force_constant(wavenumbers, reduced_masses)
-    
+    force_constants = force_constant(omega, reduced_masses)
+ 
+    print(force_constants)
+
     # Write the modes as xyz-files
     write_modes(eigenvectors_internal_normalized, atom_coords, atom_names)
     # Write the wavenumbers and intensities to a file

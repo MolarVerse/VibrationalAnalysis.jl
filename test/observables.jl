@@ -2,11 +2,15 @@ using VibrationalAnalysis
 using Test
 
 @testset "Wave Number DFTB" begin
-    @test wavenumber_dftb([1.0]) == [16255.648219071298]
+    wavenumber, omega = wavenumber_dftb([1.0])
+    @test wavenumber == [162.55648219071298]
+    @test omega == [3.061997724547502e13]
 end
 
 @testset "Wave Number kcal" begin
-    @test wavenumber_kcal([1.0]) == [34339.602736400884]
+    wavenumber, omega = wavenumber_kcal([1.0])
+    @test wavenumber == [108.59135859237747]
+    @test omega == [2.0454828280872953e13]
 end
 
 @testset "Reduced Mass" begin
