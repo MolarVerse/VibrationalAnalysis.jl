@@ -1,7 +1,7 @@
 using VibrationalAnalysis
 using Test
 
-@testset "Center of mass - h2o" begin
+@testset "Center of Mass - h2o" begin
     # Test H2O Restart File
     _ , atom_masses, atom_coords = read_rst("../data/test_h2o.rst")
     @test atom_masses == [15.9994, 1.00794, 1.00794]
@@ -18,7 +18,7 @@ using Test
     ]
 end
 
-@testset "Center of mass - nh3" begin
+@testset "Center of Mass - nh3" begin
     # Test NH3 Restart File
     _ , atom_masses, atom_coords = read_rst("../data/test_nh3.rst")
     @test atom_masses == [14.0067, 1.00794, 1.00794, 1.00794]
@@ -37,7 +37,7 @@ end
     ]
 end
 
-@testset "Inertia tesnor - h2o" begin
+@testset "Inertia Tensor - h2o" begin
     # Test H2O Restart File
     _ , atom_masses, atom_coords = read_rst("../data/test_h2o.rst")
     @test atom_masses == [15.9994, 1.00794, 1.00794]
@@ -54,7 +54,7 @@ end
     ]
 end
 
-@testset "Inertia tesnor - nh3" begin
+@testset "Inertia Tensor - nh3" begin
     # Test NH3 Restart File
     _ , atom_masses, atom_coords = read_rst("../data/test_nh3.rst")
     @test atom_masses == [14.0067, 1.00794, 1.00794, 1.00794]

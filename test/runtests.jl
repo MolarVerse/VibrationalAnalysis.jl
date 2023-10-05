@@ -9,3 +9,5 @@ include("symmetrize.jl")
 include("coordinate_transform.jl")
 # Test Transformation Functions
 include("transformation.jl")
+# Test Observable Functions
+include("observables.jl")
