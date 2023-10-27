@@ -2,12 +2,18 @@
 export wavenumber_kcal, wavenumber_dftb, reduced_mass, force_constant, infrared_intensity
 
 """
-    wavenumber_dftb(eigenvalues::Vector{Float64})
+    wavenumber_dftb(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
 
-Convert eigenvalues from Hartree Å^-2 g^-1 to wavenumbers in cm^-1.
+Convert `eigenvalues` from Hartree Å^-2 g^-1 to `wavenumbers` in cm^-1. Made for DFTB hessian files.
+Output include `omega` in s^-2.
 
+``ω = √v``
+
+``ν̃ = 1/(2π * c) * ω``
+
+# Arguments
+- `eigenvalues::Vector{Float64}`: The eigenvalues.
 """
-
 function wavenumber_dftb(eigenvalues::Vector{Float64})
     
     # Conversion Hartree B^-2 g^-1 to s^-2: 
@@ -22,12 +28,18 @@ end
 
 
 """
-    wavenumber_kcal(eigenvalues::Vector{Float64})
+    wavenumber_kcal(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
 
-Convert eigenvalues from kcal Å^-2 g^-1 to wavenumbers in cm^-1.
+Convert `eigenvalues` from kcal Å^-2 g^-1 to `wavenumbers` in cm^-1. Made for QMCFC hessian files.
+Output include `omega` in s^-2.
 
+``ω = √v``
+
+``ν̃ = 1/(2π * c) * ω``
+
+# Arguments
+- `eigenvalues::Vector{Float64}`: The eigenvalues.
 """
-
 function wavenumber_kcal(eigenvalues::Vector{Float64})
     
     # Convert eigenvalues in kcal Å^-2 g^-1 to wavenumbers in s^-2: 
@@ -41,22 +53,27 @@ function wavenumber_kcal(eigenvalues::Vector{Float64})
 end
 
 """
-    reduced_mass(normalization)
+    reduced_mass(normalization::Vector{Float64}) -> red_mass::Vector{Float64}
 
 Calculate the reduced mass from the normalization vector.
-"""
 
-function reduced_mass(normalization)
+# Arguments
+- `normalization::Vector{Float64}`: The normalization vector.
+"""
+function reduced_mass(normalization::Vector{Float64})
     red_mass = normalization .^ 2
     return red_mass[:] # convert to vector
 end
 
 """
-    force_constant(wavenumbers::Vector{Float64}, reduced_mass::Vector{Float64})
+    force_constant(wavenumbers::Vector{Float64}, reduced_mass::Vector{Float64}) -> force_const::Vector{Float64}
 
 Calculate the force constant from the wavenumbers and the reduced mass.
-"""
 
+# Arguments
+- `wavenumbers::Vector{Float64}`: The wavenumbers.
+- `reduced_mass::Vector{Float64}`: The reduced mass.
+"""
 function force_constant(omega::Vector{Float64}, reduced_mass::Vector{Float64})
     # Conversion g mol^-1 s^-2 to mdyn Å^-1: / 6.022 / 1E23 (mol) / 1E3 (kg/g) / 1E2 (mdyn/Å / N/m)
     force_const =  omega'.^2 .* reduced_mass / 6.022 / 1E28
@@ -64,20 +81,29 @@ function force_constant(omega::Vector{Float64}, reduced_mass::Vector{Float64})
 end
 
 """
-    infrared_intensity(eigenvectors_internal_normalized::Matrix{Float64}, coordinates::Matrix{Float64}, charges::Vector{Float64})
+    infrared_intensity(eigenvectors_internal_normalized::Matrix{Float64}, atom_charges::Vector{Float64}, reduced_mass::Vector{Float64}) -> intensities::Vector{Float64}
 
-Calculate the infrared intensity from the normalization eigen matrix, the coordinates and the charges.
+Calculate the infrared intensity in km mol^-1 from the normalization eigen matrix, the coordinates and the charges.
+
+# Arguments
+- `eigenvectors_internal_normalized::Matrix{Float64}`: The normalized eigenvectors.
+- `atom_charges::Vector{Float64}`: The atom charges.
+- `reduced_mass::Vector{Float64}`: The reduced mass.
 """
-
-function infrared_intensity(eigenvectors_internal_normalized::Matrix{Float64}, atom_charges::Vector{Float64}, reduced_masses)
+function infrared_intensity(eigenvectors_internal_normalized::Matrix{Float64}, atom_charges::Vector{Float64}, reduced_masses::Vector{Float64})
+    
     intensities = []
+    
     for i in 1:size(eigenvectors_internal_normalized)[1]
+        
+        # Eigenvector of the i-th mode
         eigenvector = reshape(eigenvectors_internal_normalized[:, i], 3, :)'
-        # http://thiele.ruc.dk/~spanget/help/g09/k_constants.html
+
+        # Conversion factor taken from: http://thiele.ruc.dk/~spanget/help/g09/k_constants.html
         intensity = sum((sum(eigenvector .* atom_charges, dims=1) / 0.2081943  / norm(eigenvector)).^2 / reduced_masses[i] * 42.2561)
+        
         push!(intensities, intensity)
     end
+    
     return intensities
 end
-
-
