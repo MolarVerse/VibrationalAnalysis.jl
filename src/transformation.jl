@@ -2,11 +2,13 @@
 export internal_coordinates, transformation_matrix, translational_modes, rotational_modes
 
 """
-	translational_modes(atom_masses::Vector{Float64})
+	translational_modes(atom_masses::Vector{Float64}) -> translation::Matrix{Float64}
 	
-	Calculate the translational modes of a molecule.   
-"""
+Calculate the translational modes of a molecule. 
 
+# Arguments
+- `atom_masses::Vector{Float64}`: The masses of the atoms.
+"""
 function translational_modes(atom_masses::Vector{Float64})
 	# Create translation matrix 3N x 3
 	masses_diagonal = [diagm(0 => [i, i, i]) for i in atom_masses]
@@ -21,11 +23,14 @@ function translational_modes(atom_masses::Vector{Float64})
 end
 
 """
-	rotational_modes(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64})
+	rotational_modes(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64}) -> rotation::Matrix{Float64}
 	
-Calculate the rotational modes of a molecule.    
-"""
+Calculate the rotational modes of a molecule.
 
+# Arguments
+- `atom_coords::Matrix{Float64}`: The coordinates of the atoms.
+- `atom_masses::Vector{Float64}`: The masses of the atoms.
+"""
 function rotational_modes(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64})
 
 	# Translate the coordinates to the center of mass
@@ -54,11 +59,14 @@ function rotational_modes(atom_coords::Matrix{Float64}, atom_masses::Vector{Floa
 end
 
 """
-	transformation_matrix(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64})
+	transformation_matrix(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64}) -> transformation::Matrix{Float64}
 	
-	Calculate the transformation matrix.  
-"""
+Calculate the transformation matrix.
 
+# Arguments
+- `atom_coords::Matrix{Float64}`: The coordinates of the atoms.
+- `atom_masses::Vector{Float64}`: The masses of the atoms.
+"""
 function transformation_matrix(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64})
 
 	# Initialize transformation matrix 3N x 3N
@@ -77,12 +85,17 @@ function transformation_matrix(atom_coords::Matrix{Float64}, atom_masses::Vector
 end
 
 """
-	internal_coordinates(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64}, hessian_mw::Matrix{Float64})
+	internal_coordinates(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64}, hessian_mw::Matrix{Float64}) -> eigenvalues::Vector{Float64}, eigenvectors_internal_normalized::Matrix{Float64}, normalization::Vector{Float64}
 	
-	Calculate the internal coordinates of a molecule.    
-"""
+Calculate the internal coordinates of a molecule.
 
+# Arguments
+- `atom_coords::Matrix{Float64}`: The coordinates of the atoms.
+- `atom_masses::Vector{Float64}`: The masses of the atoms.
+- `hessian_mw::Matrix{Float64}`: The mass weighted hessian.
+"""
 function internal_coordinates(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64}, hessian_mw::Matrix{Float64})
+	
 	# Calculate the transformation matrix
 	transformation = transformation_matrix(atom_coords, atom_masses)
 	# Gram-Schmidt orthogonalization
@@ -98,7 +111,7 @@ function internal_coordinates(atom_coords::Matrix{Float64}, atom_masses::Vector{
 	eigenvectors_internal = masses_matrix * transformation * eigenvectors
 
 	# Normalize Vectors
-	normalization = sqrt.(1 ./ sum(eigenvectors_internal .^ 2, dims = 1))
+	normalization = sqrt.(1 ./ sum(eigenvectors_internal .^ 2, dims = 1))[:] # convert to vector
 	# Normalize the eigenvectors
 	eigenvectors_internal_normalized = eigenvectors_internal .* normalization
 

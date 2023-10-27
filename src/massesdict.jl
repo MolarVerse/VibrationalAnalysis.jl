@@ -1,3 +1,16 @@
+"""
+    masses::Dict{String, Float64}
+
+Atomic masses in amu. Letter all in lowercase.
+
+# Example
+```julia-repl
+julia> masses["h"]
+1.00794
+julia> masses["c"]
+12.0107
+```
+"""
 masses = Dict(
     "h"   => 1.00794,
     "d"   => 2.014101778,
