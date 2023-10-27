@@ -1,5 +1,20 @@
 export calculate
 
+"""
+    calculate(rst_file::String, hessian_file::String, moldescriptor_file::String)
+
+Reads the restart file, the hessian and the atom charges and calculates the wavenumbers, intensities, force constants and reduced masses.
+
+# Arguments
+- `rst_file::String`: The restart file.
+- `hessian_file::String`: The hessian file.
+- `moldescriptor_file::String`: The moldescriptor file.
+
+# Example
+```julia-repl
+julia> calculate("restart.rst", "hessian.dat", "moldescriptor.dat")
+```
+"""
 function calculate(rst_file::String, hessian_file::String, moldescriptor_file::String)
 
     # Read restart restart file 
