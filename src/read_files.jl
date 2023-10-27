@@ -5,10 +5,12 @@ export read_rst, read_hessian, read_moldescriptor
 include("massesdict.jl")
 
 """
-    read_rst(rst_file::String)
+    read_rst(rst_file::String) -> atom_names::Vector{String}, atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_types::Vector{Int64}
 
 Reads a restart file and returns a tuple of atom names, masses, and coordinates.
-    
+
+# Arguments
+- `rst_file::String`: The restart file.
 """
 function read_rst(rst_file::String)
 
@@ -48,10 +50,12 @@ function read_rst(rst_file::String)
 end
 
 """
-    read_hessian(hessian_file::String)
+    read_hessian(hessian_file::String) -> hessian::Matrix{Float64}
 
 Reads a hessian file and returns a nxn Matrix of the hessian.
 
+# Arguments
+- `hessian_file::String`: The hessian file.
 """
 function read_hessian(hessian_file::String)
     
@@ -91,10 +95,12 @@ function read_hessian(hessian_file::String)
 end
 
 """
-    read_moldescriptor(moldescriptor_file::String)
+    read_moldescriptor(moldescriptor_file::String) -> atom_charges::Vector{Float64}
 
 Reads a moldescriptor file and returns atom_charges.
-    
+
+# Arguments
+- `moldescriptor_file::String`: The moldescriptor file.
 """
 function read_moldescriptor(moldescriptor_file::String, atom_names::Vector{String}, atom_types::Vector{Int64})
 

@@ -15,10 +15,13 @@ julia> center_to_com(coord, masses)
 ```
 """
 function center_to_com(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64})
+    
     # Calculate the center of mass
     com = sum(atom_coords .* atom_masses, dims=1) / sum(atom_masses)
+    
     # Translate the coordinates to the center of mass
-    atom_coords = atom_coords .- com
+    atom_coords = atom_coords .- com#
+
     return atom_coords
 end
 

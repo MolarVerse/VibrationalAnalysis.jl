@@ -1,7 +1,7 @@
 export calculate
 
 """
-    calculate(rst_file::String, hessian_file::String, moldescriptor_file::String)
+    calculate(rst_file::String, hessian_file::String, moldescriptor_file::String) -> wavenumbers::Vector{Float64}, intensities::Vector{Float64}, force_constants::Vector{Float64}, reduced_masses::Vector{Float64}
 
 Reads the restart file, the hessian and the atom charges and calculates the wavenumbers, intensities, force constants and reduced masses.
 
@@ -29,7 +29,7 @@ function calculate(rst_file::String, hessian_file::String, moldescriptor_file::S
     # Transforme in internal coordinates
     eigenvalues, eigenvectors_internal_normalized, normalization = internal_coordinates(atom_coords, atom_masses, hessian_mw)
 
-    #Read the atom charges
+    # Read the atom charges
     atom_charges = read_moldescriptor(moldescriptor_file, atom_names, atom_types)
 
     # Calculate observables
