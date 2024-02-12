@@ -19,5 +19,6 @@ end
 
 @testset "Force Constant" begin
     @test force_constant([1.0], [1.0]) == [1.6605778811026238e-29]
+
 end
 

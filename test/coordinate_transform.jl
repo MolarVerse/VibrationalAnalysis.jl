@@ -3,7 +3,7 @@ using Test
 
 @testset "Center of Mass - h2o" begin
     # Test H2O Restart File
-    _ , atom_masses, atom_coords = read_rst("../data/test_h2o.rst")
+    _ , atom_masses, atom_coords = read_rst("data/test_h2o.rst")
     @test atom_masses == [15.9994, 1.00794, 1.00794]
     @test atom_coords == [
         -0.01294293652 -0.00022738404 -0.00072569662
@@ -20,7 +20,7 @@ end
 
 @testset "Center of Mass - nh3" begin
     # Test NH3 Restart File
-    _ , atom_masses, atom_coords = read_rst("../data/test_nh3.rst")
+    _ , atom_masses, atom_coords = read_rst("data/test_nh3.rst")
     @test atom_masses == [14.0067, 1.00794, 1.00794, 1.00794]
     @test atom_coords == [
         -0.000000 0.000000 0.084892
@@ -39,7 +39,7 @@ end
 
 @testset "Inertia Tensor - h2o" begin
     # Test H2O Restart File
-    _ , atom_masses, atom_coords = read_rst("../data/test_h2o.rst")
+    _ , atom_masses, atom_coords = read_rst("data/test_h2o.rst")
     @test atom_masses == [15.9994, 1.00794, 1.00794]
     @test atom_coords == [
         -0.01294293652 -0.00022738404 -0.00072569662
@@ -56,7 +56,7 @@ end
 
 @testset "Inertia Tensor - nh3" begin
     # Test NH3 Restart File
-    _ , atom_masses, atom_coords = read_rst("../data/test_nh3.rst")
+    _ , atom_masses, atom_coords = read_rst("data/test_nh3.rst")
     @test atom_masses == [14.0067, 1.00794, 1.00794, 1.00794]
     @test atom_coords == [
         -0.000000 0.000000 0.084892
