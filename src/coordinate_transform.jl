@@ -1,5 +1,3 @@
-export center_to_com, inertia_tensor
-
 """
     center_to_com(coord::Matrix{Float64}, masses::Vector{Float64})
 

@@ -1,6 +1,3 @@
-
-export internal_coordinates, transformation_matrix, translational_modes, rotational_modes
-
 """
 	translational_modes(atom_masses::Vector{Float64}) -> translation::Matrix{Float64}
 	

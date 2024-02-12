@@ -11,3 +11,5 @@ include("coordinate_transform.jl")
 include("transformation.jl")
 # Test Observable Functions
 include("observables.jl")
+# Test Calculate Functions
+include("calculate.jl")

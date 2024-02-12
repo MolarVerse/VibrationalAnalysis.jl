@@ -1,4 +1,4 @@
-using VibrationalAnalysis
+using VibrationalAnalysis: wavenumber_dftb, wavenumber_kcal, reduced_mass, force_constant
 using Test
 
 @testset "Wave Number DFTB" begin
@@ -19,5 +19,6 @@ end
 
 @testset "Force Constant" begin
     @test force_constant([1.0], [1.0]) == [1.6605778811026238e-29]
+
 end
 
