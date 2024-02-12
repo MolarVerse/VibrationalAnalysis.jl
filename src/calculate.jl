@@ -1,7 +1,7 @@
-export calculate
+export calculate, read_calculate
 
 """
-    calculate(rst_file::String, hessian_file::String, moldescriptor_file::String) -> wavenumbers::Vector{Float64}, intensities::Vector{Float64}, force_constants::Vector{Float64}, reduced_masses::Vector{Float64}
+    read_calculate(rst_file::String, hessian_file::String, moldescriptor_file::String) -> wavenumbers::Vector{Float64}, intensities::Vector{Float64}, force_constants::Vector{Float64}, reduced_masses::Vector{Float64}
 
 Reads the restart file, the hessian and the atom charges and calculates the wavenumbers, intensities, force constants and reduced masses.
 
@@ -12,10 +12,10 @@ Reads the restart file, the hessian and the atom charges and calculates the wave
 
 # Example
 ```julia-repl
-julia> calculate("restart.rst", "hessian.dat", "moldescriptor.dat")
+julia> read_calculate("restart.rst", "hessian.dat", "moldescriptor.dat")
 ```
 """
-function calculate(rst_file::String, hessian_file::String, moldescriptor_file::String)
+function read_calculate(rst_file::String, hessian_file::String, moldescriptor_file::String)
 
     # Read restart restart file 
     atom_names, atom_masses, atom_coords, atom_types = read_rst(rst_file)
@@ -23,14 +23,39 @@ function calculate(rst_file::String, hessian_file::String, moldescriptor_file::S
     # Read the hessian
     hessian = read_hessian(hessian_file)
 
+    # Read the atom charges
+    atom_charges = read_moldescriptor(moldescriptor_file, atom_names, atom_types)
+
+    wavenumbers, intensities, force_constants, reduced_masses = calculate(atom_masses, atom_coords, atom_charges, hessian)
+
+    return wavenumbers, intensities, force_constants, reduced_masses
+end
+
+"""
+    calculate(atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_charges::Vector{Float64}, hessian::Matrix{Float64}) -> wavenumbers::Vector{Float64}, intensities::Vector{Float64}, force_constants::Vector{Float64}, reduced_masses::Vector{Float64}
+
+Calculates the wavenumbers, intensities, force constants and reduced masses from the atom masses, atom coordinates, atom charges and the hessian.
+
+# Arguments
+- `atom_masses::Vector{Float64}`: Vector of atom_masses (n)
+- `atom_coords::Matrix{Float64}`: Matrix of atom coordinates (3xn)
+- `atom_charges::Vector{Float64}`: Vector of atom charges (n)
+- `hessian::Matrix{Float64}`: Matrix of the hessian (nxn)
+
+# Example
+```julia-repl
+julia> read_calculate(atom_masses, atom_coords, atom_charges, hessian)
+```
+
+"""
+
+function calculate(atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_charges::Vector{Float64}, hessian::Matrix{Float64})
+    
     # Symmetrize the hessian and mass weighting
     hessian_mw = mass_weighted_hessian(hessian, atom_masses)
 
-    # Transforme in internal coordinates
+    # Transform in internal coordinates
     eigenvalues, eigenvectors_internal_normalized, normalization = internal_coordinates(atom_coords, atom_masses, hessian_mw)
-
-    # Read the atom charges
-    atom_charges = read_moldescriptor(moldescriptor_file, atom_names, atom_types)
 
     # Calculate observables
     wavenumbers, omega = wavenumber_kcal(eigenvalues)
