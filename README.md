@@ -1,5 +1,6 @@
-[![codecov](https://codecov.io/gh/galjos/VibrationalAnalysis.jl/graph/badge.svg?token=PIG1D1QIEE)](https://codecov.io/gh/galjos/VibrationalAnalysis.jl)
-[![Build CI](https://github.com/galjos/VibrationalAnalysis.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/galjos/VibrationalAnalysis.jl/actions/workflows/CI.yml)
+[![codecov](https://codecov.io/gh/MolarVerse/VibrationalAnalysis.jl/graph/badge.svg?token=kESDHEzXcY)](https://codecov.io/gh/MolarVerse/VibrationalAnalysis.jl)
+[![CI](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/CI.yml)
+[![TagBot](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/TagBot.yml/badge.svg)](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/TagBot.yml)
 
 # VibrationalAnalysis.jl
 
