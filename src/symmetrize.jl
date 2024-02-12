@@ -1,7 +1,3 @@
-using LinearAlgebra
-
-export mass_weighted_hessian, mass_weighted_hessian_add, symmetrize_addition, symmetrize_multiplication
-
 """
     symmetrize_addition(hessian::Matrix{Float64}) -> hessian_sym::Matrix{Float64}
 

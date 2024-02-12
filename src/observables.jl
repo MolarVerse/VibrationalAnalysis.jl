@@ -1,6 +1,4 @@
 
-export wavenumber_kcal, wavenumber_dftb, reduced_mass, force_constant, infrared_intensity
-
 """
     wavenumber_dftb(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
 
@@ -76,7 +74,7 @@ Calculate the force constant from the wavenumbers and the reduced mass.
 """
 function force_constant(omega::Vector{Float64}, reduced_mass::Vector{Float64})
     # Conversion g mol^-1 s^-2 to mdyn Å^-1: / 6.022 / 1E23 (mol) / 1E3 (kg/g) / 1E2 (mdyn/Å / N/m)
-    force_const =  omega'.^2 .* reduced_mass / 6.022 / 1E28
+    force_const =  omega.^2 .* reduced_mass / 6.022 / 1E28
     return force_const[:] # convert to vector
 end
 

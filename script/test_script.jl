@@ -5,15 +5,15 @@ c = 2.99792458e10 # in cm/s https://discourse.julialang.org/t/the-speed-of-light
 
 include("dicts__massesdict.jl")
 
-rst = readdlm("ceo2_min.rst")
-atomNames = rst[:,1][1:end-1]
+rst = readdlm("../test/data/test_h2o.rst")
+atomNames = rst[:,1][3:end]
 nAtoms = size(atomNames)[1]
 
 masses = (x->masses[lowercase(x)]).(atomNames)
 masses_repeat = repeat(masses, inner=3)
 masses_mat = (masses_repeat * masses_repeat').^(1/2)
 
-hess = readdlm("hess.mat")
+hess = readdlm("../test/data/test_hessian_h2o.dat")
 
 H = hess' * hess
 
@@ -24,7 +24,7 @@ H_sym = V * Diagonal(sqrt.(abs.(v))) * V'
 H_sym_w = H_sym ./ masses_mat
 
 ### center of mass
-coord = rst[:, 4:6][1:end-1, :]
+coord = rst[:, 4:6][3:end, :]
 Rcm = sum(masses .* coord, dims = 1) ./ sum(masses)
 
 ### Inertia tensor
@@ -108,7 +108,7 @@ k = ω.^2 .* red_mass' / 6.022 / 1E28
 # writedlm(stdout, k)
 
 ### Charge HARD CODED ATTENTION!!!!!!! 
-charge = Dict("ce" => 1.796238775774, "o" => -0.898119387887)
+charge = Dict("o" => -0.65966, "h" => 0.32983)
 q = (x->charge[lowercase(x)]).(atomNames)
 
 intensities = []
@@ -121,8 +121,10 @@ for i in 1:size(Inormal)[1]
 end
 
 #### Print intensities
-println("Intensities")
-writedlm(stdout, hcat(ν_tilde[7:end], intensities[7:end]))
+println("Intensities: ", intensities)
+println("Wavenumber:", ν_tilde)
+println("Force Constants:", k)
+println("Reduced Masses:", red_mass)
 
 
 # Print all modes
@@ -157,49 +159,4 @@ writedlm(stdout, hcat(ν_tilde[7:end], intensities[7:end]))
 
 # println("Quadrupole moment: ", quad)
 
-using Plots
-using Trapz
-using LaTeXStrings
 
-# add a broadening function
-function add_broadening(list_ex_energy, list_osci_strength, line_profile::String="Lorentzian", line_param::Float64=10.0, step::Float64=0.1) where T<:Real
-    x_min = 0
-    x_max = 1250
-    x = x_min:step:x_max
-    y = zeros(length(x))
-
-    for xp in 1:length(x)
-        for (e, f) in zip(list_ex_energy, list_osci_strength)
-            if line_profile == "Gaussian"
-                y[xp] += f * exp(-((e - x[xp]) / line_param)^2)
-            elseif line_profile == "Lorentzian"
-                y[xp] += 0.5 * line_param * f / (pi * ((x[xp] - e)^2 + 0.25 * line_param^2))
-            end
-        end
-    end
-
-    # # normalize the lineshape so that its integral is 1
-    # integral = trapz(y, x)
-    # y /= integral
-
-    # # scale the lineshape to retain the same peak height
-    # max_y = maximum(y)
-    # y *= maximum(list_osci_strength) / max_y
-    
-    return x, y
-end
-
-# plot the spectrum
-function plotSpectrum(ν, I)
-    # scatter(ν, I, label="Spectrum")
-    x,y = add_broadening(ν, I)
-    plot!(x, y, label="Spectrum", xlabel=L"wavenumber in cm${^-1}$", ylabel=L"Intesity in km mol$^{-1}$")
-end
-
-file = open("spectrum_ceo2.txt", "w")
-
-# write the spectrum to a file
-writedlm(file, hcat(add_broadening(real.(ν_tilde), intensities)...))
-
-# close the file
-close(file)
