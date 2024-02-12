@@ -1,8 +1,4 @@
-# Read Restart File
-
 export read_rst, read_hessian, read_moldescriptor
-
-include("massesdict.jl")
 
 """
     read_rst(rst_file::String) -> atom_names::Vector{String}, atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_types::Vector{Int64}

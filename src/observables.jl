@@ -1,6 +1,4 @@
 
-export wavenumber_kcal, wavenumber_dftb, reduced_mass, force_constant, infrared_intensity
-
 """
     wavenumber_dftb(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
 

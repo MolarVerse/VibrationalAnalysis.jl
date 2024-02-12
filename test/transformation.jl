@@ -1,4 +1,4 @@
-using VibrationalAnalysis
+using VibrationalAnalysis: translational_modes, rotational_modes, transformation_matrix, internal_coordinates
 using Test
 using LinearAlgebra
 

@@ -40,7 +40,7 @@ Calculates the wavenumbers, intensities, force constants and reduced masses from
 - `atom_masses::Vector{Float64}`: Vector of atom_masses (n)
 - `atom_coords::Matrix{Float64}`: Matrix of atom coordinates (3xn)
 - `atom_charges::Vector{Float64}`: Vector of atom charges (n)
-- `hessian::Matrix{Float64}`: Matrix of the hessian (nxn)
+- `hessian::Matrix{Float64}`: Matrix of the hessian (3nx3n)
 
 # Example
 ```julia-repl

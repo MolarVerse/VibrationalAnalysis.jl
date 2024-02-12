@@ -1,4 +1,4 @@
-using VibrationalAnalysis
+using VibrationalAnalysis: read_rst, center_to_com, inertia_tensor
 using Test
 
 @testset "Center of Mass - h2o" begin

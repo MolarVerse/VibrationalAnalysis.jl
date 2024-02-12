@@ -22,6 +22,7 @@ module VibrationalAnalysis
 
 using LinearAlgebra
 
+include("massesdict.jl")
 include("read_files.jl")
 include("coordinate_transform.jl")
 include("symmetrize.jl")

@@ -1,6 +1,3 @@
-
-export write_modes, write_wavenumber_intensity
-
 """
     write_modes(eigenvector_internal::Matrix{Float64}, coord::Matrix{Float64}, atom_names::Vector{String}; filename="modes", amplitude=0.25, step=0.01) -> nothing
 
@@ -27,12 +24,12 @@ function write_modes(eigenvectors_internal_normalized::Matrix{Float64}, atom_coo
     
         mode = reshape(eigenvectors_internal_normalized[:, i], 3, :)'
     
-        for (i,α) in enumerate(-amplitude:step:amplitude)
+        for (i,alpha) in enumerate(-amplitude:step:amplitude)
             println(file, n_atoms, "\n")
     
             for i in 1:n_atoms
                 println(file, atom_names[i] , "    ",
-                join(atom_coords[i, :] .+ (α * mode[i,:]), "   " ))
+                join(atom_coords[i, :] .+ (alpha * mode[i,:]), "   " ))
             end
         end
         close(file)

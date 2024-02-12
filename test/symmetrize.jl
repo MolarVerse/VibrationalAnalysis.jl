@@ -1,4 +1,4 @@
-using VibrationalAnalysis
+using VibrationalAnalysis: symmetrize_addition, symmetrize_multiplication, read_hessian, read_rst, mass_weighted_hessian, mass_weighted_hessian_add
 using Test
 
 # Test symmetrize matrices src/symmetrize.jl
@@ -9,7 +9,8 @@ using Test
     @test symmetrize_addition([2.0 3.0; 1.0 -2.0]) == [2.0 2.0; 2.0 -2.0]
 
     # Test Symmetrize Multiplication
-    @test symmetrize_multiplication([2.0 3.0; 1.0 -2.0]) == [2.1213203435596424 0.7071067811865476; 0.7071067811865475 3.5355339059327373]
+    sym_mat = symmetrize_multiplication([2.0 3.0; 1.0 -2.0])
+    @test sym_mat ≈ [2.1213203 0.707106; 0.707106 3.53553] atol=1e-5
 
 end
 

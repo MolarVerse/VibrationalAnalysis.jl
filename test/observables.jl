@@ -1,4 +1,4 @@
-using VibrationalAnalysis
+using VibrationalAnalysis: wavenumber_dftb, wavenumber_kcal, reduced_mass, force_constant
 using Test
 
 @testset "Wave Number DFTB" begin

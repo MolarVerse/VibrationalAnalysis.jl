@@ -1,4 +1,4 @@
-using VibrationalAnalysis
+using VibrationalAnalysis: read_rst, read_hessian, read_moldescriptor
 using Test
 
 # Test reading RST files src/read_files.jl
