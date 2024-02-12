@@ -13,7 +13,8 @@ julia> ] add VibrationalAnalysis
 ## Usage
 ```julia-repl
 julia> using VibrationalAnalysis
-julia> calculate("restart.rst", "hessian.dat", "moldescriptor.dat")
+julia> read_calculate("restart.rst", "hessian.dat", "moldescriptor.dat")
+julia> calculate(atom_masses, atom_coords, atom_charges, hessian)
 ```
 
 ## Documentation
