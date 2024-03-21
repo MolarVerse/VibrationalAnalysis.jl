@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- affiliation: "Universität Innsbruck"
+  family-names: Gallmetzer
+  given-names: Josef Maria
+  orcid: 0000-0002-4185-7831
+- affiliation: "Universität Innsbruck"
+  family-names: Gamper
+  given-names: Jakob
+  orcid: 0000-0003-1136-2536
+date-released: '2024-03-18'
+doi: 10.5281/zenodo.10829271
+license:
+- mit
+title: VibrationalAnalysis.jl
+type: software
+version: 0.1.5
+url: https://github.com/MolarVerse/VibrationalAnalysis.jl
