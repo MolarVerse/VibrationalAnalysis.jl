@@ -7,7 +7,7 @@
 
 # VibrationalAnalysis.jl
 
-This package provides tools to perform [vibrational analysis](https://gaussian.com/vib/) of molecules. It is based on the output of the QMCFC and [PQ](https://github.com/MolarVerse/PQ) molecular dynamics codes developed of the [University of Innsbruck](https://www.uibk.ac.at/).
+This package provides tools to perform [vibrational analysis](https://gaussian.com/vib/) of molecules. It is based on the output of QMCFC and [PQ](https://github.com/MolarVerse/PQ) molecular dynamics codes developed of the [University of Innsbruck](https://www.uibk.ac.at/).
 
 ## Installation
 ```julia-repl
