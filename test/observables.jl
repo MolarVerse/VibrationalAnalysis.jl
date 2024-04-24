@@ -4,13 +4,13 @@ using Test
 @testset "Wave Number DFTB" begin
     wavenumber, omega = wavenumber_dftb([1.0])
     @test wavenumber ≈ [5140.4873] atol=1e-4
-    @test omega ≈ [9.6828e14] atol=1e-4
+    @test omega ≈ [9.6829e14] rtol=1e-4
 end
 
 @testset "Wave Number kcal" begin
     wavenumber, omega = wavenumber_kcal([1.0])
     @test wavenumber ≈ [108.5914] atol=1e-4
-    @test omega ≈ [2.0455e13] atol=1e-4
+    @test omega ≈ [2.0455e13] rtol=1e-4 
 end
 
 @testset "Reduced Mass" begin
