@@ -1,3 +1,4 @@
+export wavenumber_dftb, wavenumber_kcal
 
 """
     wavenumber_dftb(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
@@ -16,7 +17,7 @@ function wavenumber_dftb(eigenvalues::Vector{Float64})
     
     # Conversion Hartree B^-2 g^-1 to s^-2: 
     #   2625500.2 J/Hartree * (0.188972598857892E+11)^2 B^2 / m^2  * 1000 g / kg
-    omega = sqrt.(eigenvalues * 2625500.2 * (0.188972598857892E+11)^2)
+    omega = sqrt.(eigenvalues * 2625500.2 * (0.188972598857892E+11)^2 * 1000)
 
     # Convert wavenumbers in s^-2 to wavenumbers in cm^-1 : 1/(2π * c) * ω
     wavenumbers = 1/(2π * 2.99792458e10) * omega
