@@ -42,13 +42,16 @@ Calculates the wavenumbers, intensities, force constants and reduced masses from
 - `atom_charges::Vector{Float64}`: Vector of atom charges (n)
 - `hessian::Matrix{Float64}`: Matrix of the hessian (3nx3n)
 
+# Optional arguments
+- `wavenumber::Function`: The wavenumber function to use. Either `wavenumber_kcal` or `wavenumber_dftb`. Default is `wavenumber_kcal`.wr 
+
 # Example
 ```julia-repl
 julia> calculate(atom_masses, atom_coords, atom_charges, hessian)
 ```
 
 """
-function calculate(atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_charges::Vector{Float64}, hessian::Matrix{Float64})
+function calculate(atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_charges::Vector{Float64}, hessian::Matrix{Float64}; wavenumber=wavenumber_kcal)
     
     # Symmetrize the hessian and mass weighting
     hessian_mw = mass_weighted_hessian(hessian, atom_masses)
@@ -57,7 +60,7 @@ function calculate(atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, a
     eigenvalues, eigenvectors_internal_normalized, normalization = internal_coordinates(atom_coords, atom_masses, hessian_mw)
 
     # Calculate observables
-    wavenumbers, omega = wavenumber_kcal(eigenvalues)
+    wavenumbers, omega = wavenumber(eigenvalues)
     reduced_masses = reduced_mass(normalization)
     intensities = infrared_intensity(eigenvectors_internal_normalized, atom_charges, reduced_masses)
     force_constants = force_constant(omega, reduced_masses)
