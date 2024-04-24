@@ -14,7 +14,7 @@ julia> read_calculate("restart.rst", "hessian.dat", "moldescriptor.dat")
 Or directly perform a vibrational analysis with atom masses, atom coordinates, atom charges and hessian of the system.
 
 ```julia-repl
-julia> read_calculate(atom_masses, atom_coords, atom_charges, hessian)
+julia> calculate(atom_masses, atom_coords, atom_charges, hessian)
 ```
 
 """
