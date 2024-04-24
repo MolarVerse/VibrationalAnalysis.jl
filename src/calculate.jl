@@ -48,7 +48,6 @@ julia> calculate(atom_masses, atom_coords, atom_charges, hessian)
 ```
 
 """
-
 function calculate(atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_charges::Vector{Float64}, hessian::Matrix{Float64})
     
     # Symmetrize the hessian and mass weighting
