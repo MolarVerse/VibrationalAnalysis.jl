@@ -48,8 +48,8 @@ Calculates the wavenumbers, intensities, force constants and reduced masses from
 # Example
 ```julia-repl
 julia> calculate(atom_masses, atom_coords, atom_charges, hessian)
+julia> calculate(atom_masses, atom_coords, atom_charges, hessian, wavenumber=wavenumber_dftb)
 ```
-
 """
 function calculate(atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_charges::Vector{Float64}, hessian::Matrix{Float64}; wavenumber=wavenumber_kcal)
     

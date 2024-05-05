@@ -14,7 +14,8 @@ julia> read_calculate("restart.rst", "hessian.dat", "moldescriptor.dat")
 Or directly perform a vibrational analysis with atom masses, atom coordinates, atom charges and hessian of the system.
 
 ```julia-repl
-julia> calculate(atom_masses, atom_coords, atom_charges, hessian)
+julia> wavenumbers, intensities, _, _ = calculate(atom_masses, atom_coords, atom_charges, hessian)
+julia> write_wavenumber_intensity(wavenumbers, intensities, filename="wavenumbers.dat")
 ```
 
 """
@@ -28,7 +29,7 @@ include("coordinate_transform.jl")
 include("symmetrize.jl")
 include("transformation.jl")
 include("observables.jl")
-include("write_out.jl")
+include("write.jl")
 include("calculate.jl")
 
 end # module VibrationalAnalysis
