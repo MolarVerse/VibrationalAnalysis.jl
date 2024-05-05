@@ -28,7 +28,7 @@ include("coordinate_transform.jl")
 include("symmetrize.jl")
 include("transformation.jl")
 include("observables.jl")
-include("write_out.jl")
+include("write.jl")
 include("calculate.jl")
 
 end # module VibrationalAnalysis
