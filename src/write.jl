@@ -16,7 +16,7 @@ Write the modes to a file in xyz format.
 - `step::Float64`: The step size of the mode. Default is 0.01.
 """
 function write_modes(eigenvectors_internal_normalized::Matrix{Float64}, atom_coords::Matrix{Float64}, atom_names::Vector{String}; filename="modes", amplitude=0.25, step=0.01)
-    for i in 1:size(eigenvectors_internal_normalized)[1]
+    for i in 1:size(eigenvectors_internal_normalized)[2]
 
         # Open file
         file = open("$filename-$i.xyz", "w")

@@ -13,3 +13,5 @@ include("transformation.jl")
 include("observables.jl")
 # Test Calculate Functions
 include("calculate.jl")
+# Test Write Functions
+include("write.jl")
