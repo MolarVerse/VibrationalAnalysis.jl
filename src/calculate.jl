@@ -1,7 +1,7 @@
 export calculate, read_calculate
 
 """
-	read_calculate(rst_file::String, hessian_file::String, moldescriptor_file::String) -> wavenumbers::Vector{Float64}, intensities::Vector{Float64}, force_constants::Vector{Float64}, reduced_masses::Vector{Float64}
+	read_calculate(rst_file, hessian_file, moldescriptor_file)
 
 Reads the restart file, the hessian and the atom charges and calculates the wavenumbers, intensities, force constants and reduced masses.
 
@@ -9,6 +9,12 @@ Reads the restart file, the hessian and the atom charges and calculates the wave
 - `rst_file::String`: The restart file.
 - `hessian_file::String`: The hessian file.
 - `moldescriptor_file::String`: The moldescriptor file.
+
+# Returns
+- `wavenumbers::Vector{Float64}`: The wavenumbers.
+- `intensities::Vector{Float64}`: The intensities.
+- `force_constants::Vector{Float64}`: The force constants.
+- `reduced_masses::Vector{Float64}`: The reduced masses.
 
 # Example
 ```julia-repl
@@ -32,7 +38,7 @@ function read_calculate(rst_file::String, hessian_file::String, moldescriptor_fi
 end
 
 """
-	calculate(atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_charges::Vector{Float64}, hessian::Matrix{Float64}) -> wavenumbers::Vector{Float64}, intensities::Vector{Float64}, force_constants::Vector{Float64}, reduced_masses::Vector{Float64}
+	calculate(atom_masses, atom_coords, atom_charges, hessian)
 
 Calculates the wavenumbers, intensities, force constants and reduced masses from the atom masses, atom coordinates, atom charges and the hessian.
 
@@ -44,6 +50,12 @@ Calculates the wavenumbers, intensities, force constants and reduced masses from
 
 # Optional arguments
 - `wavenumber::Function`: The wavenumber function to use. Either `wavenumber_kcal` or `wavenumber_dftb`. Default is `wavenumber_kcal`. 
+
+# Returns
+- `wavenumbers::Vector{Float64}`: The wavenumbers.
+- `intensities::Vector{Float64}`: The intensities.
+- `force_constants::Vector{Float64}`: The force constants.
+- `reduced_masses::Vector{Float64}`: The reduced masses.
 
 # Example
 ```julia-repl
