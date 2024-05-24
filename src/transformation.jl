@@ -1,4 +1,4 @@
-"""
+"""@docs
 	translational_modes(atom_masses::Vector{Float64}) -> translation::Matrix{Float64}
 	
 Calculate the translational modes of a molecule. 
@@ -19,7 +19,7 @@ function translational_modes(atom_masses::Vector{Float64})
 	return translation
 end
 
-"""
+"""@docs
 	rotational_modes(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64}) -> rotation::Matrix{Float64}
 	
 Calculate the rotational modes of a molecule.
@@ -55,7 +55,7 @@ function rotational_modes(atom_coords::Matrix{Float64}, atom_masses::Vector{Floa
 	return rotation
 end
 
-"""
+"""@docs
 	transformation_matrix(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64}) -> transformation::Matrix{Float64}
 	
 Calculate the transformation matrix.
@@ -81,7 +81,7 @@ function transformation_matrix(atom_coords::Matrix{Float64}, atom_masses::Vector
 	return transformation
 end
 
-"""
+"""@docs
 	internal_coordinates(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64}, hessian_mw::Matrix{Float64}) -> eigenvalues::Vector{Float64}, eigenvectors_internal_normalized::Matrix{Float64}, normalization::Vector{Float64}
 	
 Calculate the internal coordinates of a molecule.
@@ -92,7 +92,7 @@ Calculate the internal coordinates of a molecule.
 - `hessian_mw::Matrix{Float64}`: The mass weighted hessian.
 """
 function internal_coordinates(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64}, hessian_mw::Matrix{Float64})
-	
+
 	# Calculate the transformation matrix
 	transformation = transformation_matrix(atom_coords, atom_masses)
 	# Gram-Schmidt orthogonalization

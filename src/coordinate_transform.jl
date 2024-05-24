@@ -1,4 +1,4 @@
-"""
+"""@docs
     center_to_com(coord::Matrix{Float64}, masses::Vector{Float64})
 
 Translate the coordinates to the center of mass.
@@ -23,7 +23,7 @@ function center_to_com(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64
     return atom_coords
 end
 
-"""
+"""@docs
     inertia_tensor(coord::Matrix{Float64}, masses::Vector{Float64})
 
 Calculate the inertia tensor of a molecule.

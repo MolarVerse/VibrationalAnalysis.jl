@@ -1,4 +1,4 @@
-"""
+"""@docs
     masses::Dict{String, Float64}
 
 Atomic masses in amu. Letter all in lowercase.

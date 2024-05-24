@@ -1,6 +1,6 @@
 export wavenumber_dftb, wavenumber_kcal
 
-"""
+"""@docs
     wavenumber_dftb(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
 
 Convert `eigenvalues` from Hartree Å^-2 g^-1 to `wavenumbers` in cm^-1. Made for DFTB hessian files.
@@ -26,7 +26,7 @@ function wavenumber_dftb(eigenvalues::Vector{Float64})
 end
 
 
-"""
+"""@docs
     wavenumber_kcal(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
 
 Convert `eigenvalues` from kcal Å^-2 g^-1 to `wavenumbers` in cm^-1. Made for QMCFC hessian files.
@@ -51,7 +51,7 @@ function wavenumber_kcal(eigenvalues::Vector{Float64})
     return wavenumbers, omega
 end
 
-"""
+"""@docs
     reduced_mass(normalization::Vector{Float64}) -> red_mass::Vector{Float64}
 
 Calculate the reduced mass from the normalization vector.
@@ -64,7 +64,7 @@ function reduced_mass(normalization::Vector{Float64})
     return red_mass[:] # convert to vector
 end
 
-"""
+"""@docs
     force_constant(wavenumbers::Vector{Float64}, reduced_mass::Vector{Float64}) -> force_const::Vector{Float64}
 
 Calculate the force constant from the wavenumbers and the reduced mass.
@@ -79,7 +79,7 @@ function force_constant(omega::Vector{Float64}, reduced_mass::Vector{Float64})
     return force_const[:] # convert to vector
 end
 
-"""
+"""@docs
     infrared_intensity(eigenvectors_internal_normalized::Matrix{Float64}, atom_charges::Vector{Float64}, reduced_mass::Vector{Float64}) -> intensities::Vector{Float64}
 
 Calculate the infrared intensity in km mol^-1 from the normalization eigen matrix, the coordinates and the charges.
