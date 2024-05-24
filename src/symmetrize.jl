@@ -1,4 +1,4 @@
-"""@docs
+"""
 	symmetrize_addition(hessian::Matrix{Float64}) -> hessian_sym::Matrix{Float64}
 
 Symmetrize a Hessian matrix by adding the transpose and dividing by 2.
@@ -12,7 +12,7 @@ function symmetrize_addition(hessian::Matrix{Float64})
 	return (hessian + hessian') / 2
 end
 
-"""@docs
+"""
 	symmetrize_multiplication(hessian::Matrix{Float64}) -> hessian_sym::Matrix{Float64}
 
 Symmetrize a Hessian matrix by multiplying by the transpose and taking the square root of the absolute value of the eigenvalues.
@@ -33,7 +33,7 @@ function symmetrize_multiplication(hessian::Matrix{Float64})
 	return _H_sym
 end
 
-"""@docs
+"""
 	mass_weight_hessian(hessian::Matrix{Float64}, atom_masses::Vector{Float64}) -> hessian::Matrix{Float64}
 
 Mass weight a Hessian matrix using matrix multiplication for symmetrization.
@@ -57,7 +57,7 @@ function mass_weighted_hessian(hessian::Matrix{Float64}, atom_masses::Vector{Flo
 	return hessian
 end
 
-"""@docs
+"""
 	mass_weight_hessian_add(hessian::Matrix{Float64}, atom_masses::Vector{Float64})
 
 Mass weight a Hessian matrix using symmetrize by addition.

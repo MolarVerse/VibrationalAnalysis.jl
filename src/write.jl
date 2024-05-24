@@ -1,6 +1,6 @@
 export write_modes, write_wavenumber_intensity
 
-"""@docs
+"""
 	write_modes(eigenvector_internal::Matrix{Float64}, coord::Matrix{Float64}, atom_names::Vector{String}; filename="modes", amplitude=0.25, step=0.01) -> nothing
 
 Write the modes to a file in xyz format.
@@ -40,7 +40,7 @@ function write_modes(eigenvectors_internal_normalized::Matrix{Float64}, atom_coo
 	return nothing
 end
 
-"""@docs
+"""
 	write_wavenumber_frequency(wavenumbers::Vector{Float64}, intensities::Vector{Float64}; filename=stdout) -> nothing
 
 Write the wavenumbers and intensities to a file.

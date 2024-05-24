@@ -1,6 +1,6 @@
 export calculate, read_calculate
 
-"""@docs
+"""
 	read_calculate(rst_file::String, hessian_file::String, moldescriptor_file::String) -> wavenumbers::Vector{Float64}, intensities::Vector{Float64}, force_constants::Vector{Float64}, reduced_masses::Vector{Float64}
 
 Reads the restart file, the hessian and the atom charges and calculates the wavenumbers, intensities, force constants and reduced masses.
@@ -31,7 +31,7 @@ function read_calculate(rst_file::String, hessian_file::String, moldescriptor_fi
 	return wavenumbers, intensities, force_constants, reduced_masses
 end
 
-"""@docs
+"""
 	calculate(atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_charges::Vector{Float64}, hessian::Matrix{Float64}) -> wavenumbers::Vector{Float64}, intensities::Vector{Float64}, force_constants::Vector{Float64}, reduced_masses::Vector{Float64}
 
 Calculates the wavenumbers, intensities, force constants and reduced masses from the atom masses, atom coordinates, atom charges and the hessian.

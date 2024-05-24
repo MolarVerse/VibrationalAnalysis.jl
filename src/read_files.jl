@@ -1,6 +1,6 @@
 export read_rst, read_hessian, read_moldescriptor
 
-"""@docs
+"""
 	read_rst(rst_file::String) -> atom_names::Vector{String}, atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_types::Vector{Int64}
 
 Reads a restart file and returns a tuple of atom names, masses, and coordinates.
@@ -45,7 +45,7 @@ function read_rst(rst_file::String)
 	return atom_names, atom_masses, atom_coords, atom_types
 end
 
-"""@docs
+"""
 	read_hessian(hessian_file::String) -> hessian::Matrix{Float64}
 
 Reads a hessian file and returns a nxn Matrix of the hessian.
@@ -90,7 +90,7 @@ function read_hessian(hessian_file::String)
 
 end
 
-"""@docs
+"""
 	read_moldescriptor(moldescriptor_file::String) -> atom_charges::Vector{Float64}
 
 Reads a moldescriptor file and returns atom_charges.
