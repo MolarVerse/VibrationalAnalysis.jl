@@ -11,3 +11,6 @@ read_calculate
 ```@docs
 calculate
 ```
+
+- link to [VibrationalAnalysis.jl](@ref)
+- link to [`calculate`](@ref)
