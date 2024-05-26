@@ -2,5 +2,5 @@ using Documenter
 using VibrationalAnalysis
 
 makedocs(
-	sitename = "VibrationalAnalysis.jl",
+	format = Documenter.HTML(),
 )

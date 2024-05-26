@@ -1,11 +1,10 @@
 name = "VibrationalAnalysis"
 uuid = "04082e5c-1d57-4577-9a0f-61e6cd56dade"
-authors = ["Josef M. Gallmetzer"]
+authors = ["Josef M. Gallmetzer <gallmetzer.josef@gmail.com>"]
 version = "0.1.6"
 
 [deps]
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
-Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
