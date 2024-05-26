@@ -22,8 +22,6 @@ julia> eigenvectors_internal_normalized = VibrationalAnalysis.normalize(eigenvec
 julia> write_modes(eigenvectors_internal_normalized, atom_coords, atom_names)
 shell> cat modes-1.xyz
 ```
-
-
 """
 function write_modes(eigenvectors_internal_normalized::Matrix{Float64}, atom_coords::Matrix{Float64}, atom_names::Vector{String}; filename = "modes", amplitude = 0.25, step = 0.01)
 	for i in 1:size(eigenvectors_internal_normalized)[2]
