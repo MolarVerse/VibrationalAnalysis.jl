@@ -12,8 +12,9 @@
 This package provides tools to perform [vibrational analysis](https://gaussian.com/vib/) of molecules. It is based on the output of QMCFC and [PQ](https://github.com/MolarVerse/PQ) molecular dynamics codes developed of the [University of Innsbruck](https://www.uibk.ac.at/).
 
 ## Installation
-```julia-repl
-julia> ] add VibrationalAnalysis
+```
+using Pkg
+Pkg.add("VibrationalAnalysis")
 ```
 
 ## Usage
@@ -23,11 +24,10 @@ julia> read_calculate("restart.rst", "hessian.dat", "moldescriptor.dat")
 julia> calculate(atom_masses, atom_coords, atom_charges, hessian)
 ```
 
-## Documentation
-```julia-repl
-julia> using VibrationalAnalysis
-julia> ?VibrationalAnalysis
-```
+# Acknowledgements
+This package was developed as part of the [MolarVerse](https://github.com/MolarVerse) project. Significant contributions were made by:
+- Josef M. Gallmetzer @galjos
+- Jakob Gamper @97gamjak
 
 ## Citation
 If you use this package in your research, please cite it using the following DOI: [10.5281/zenodo.10829271](https://doi.org/10.5281/zenodo.10829271)
