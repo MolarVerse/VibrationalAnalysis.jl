@@ -1,5 +1,5 @@
 ```@raw html
-<center><img src="assets/logo.png" width="250"></center>
+<img src="assets/logo.png" width="250">
 ```
 
 [![codecov](https://codecov.io/gh/MolarVerse/VibrationalAnalysis.jl/graph/badge.svg?token=kESDHEzXcY)](https://codecov.io/gh/MolarVerse/VibrationalAnalysis.jl)
