@@ -92,7 +92,7 @@ Calculate the internal coordinates of a molecule.
 - `hessian_mw::Matrix{Float64}`: The mass weighted hessian.
 """
 function internal_coordinates(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64}, hessian_mw::Matrix{Float64})
-	
+
 	# Calculate the transformation matrix
 	transformation = transformation_matrix(atom_coords, atom_masses)
 	# Gram-Schmidt orthogonalization

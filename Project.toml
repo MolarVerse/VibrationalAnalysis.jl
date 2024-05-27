@@ -1,6 +1,6 @@
 name = "VibrationalAnalysis"
 uuid = "04082e5c-1d57-4577-9a0f-61e6cd56dade"
-authors = ["Josef M. Gallmetzer"]
+authors = ["Josef M. Gallmetzer <gallmetzer.josef@gmail.com>"]
 version = "0.1.6"
 
 [deps]
