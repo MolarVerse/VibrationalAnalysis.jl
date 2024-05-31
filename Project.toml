@@ -1,7 +1,8 @@
 name = "VibrationalAnalysis"
 uuid = "04082e5c-1d57-4577-9a0f-61e6cd56dade"
-authors = ["Josef M. Gallmetzer <gallmetzer.josef@gmail.com>"]
-version = "0.1.6"
+authors = ["Josef M. Gallmetzer"]
+version = "0.1.8"
+
 
 [deps]
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
