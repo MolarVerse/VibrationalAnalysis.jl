@@ -11,6 +11,6 @@ makedocs(
 		"Installation" => "installation.md",
 		"Examples" => "examples.md",
 		"License" => "license.md",
-		"Functions" => "functions.md",
+		"API" => "api.md",
 	],
 )
