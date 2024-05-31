@@ -1,4 +1,8 @@
-""" 
+"""@meta
+CurrentModule = VibrationalAnalysis
+"""
+
+"""
 # VibrationalAnalysis.jl 
 
 This module contains functions to perform vibrational analysis on a QMCFC output.
