@@ -14,3 +14,7 @@ makedocs(
 		"API" => "api.md",
 	],
 )
+
+deploydocs(
+	repo = "github.com/MolarVerse/VibrationalAnalysis.jl.git",
+)
