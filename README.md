@@ -4,7 +4,7 @@
 [![CI](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/CI.yml)
 [![TagBot](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/TagBot.yml/badge.svg)](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/TagBot.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10829271.svg)](https://doi.org/10.5281/zenodo.10829271)
-[![pages-build-deployment](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages)](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/pages/pages-build-deployment)
+[![Docs](https://github.com/MolarVerse/VibrationalAnalysis.jl/actions/workflows/pages/pages-build-deployment/badge.svg)](https://molarverse.github.io/VibrationalAnalysis.jl/dev/)
 
 
 # VibrationalAnalysis.jl
