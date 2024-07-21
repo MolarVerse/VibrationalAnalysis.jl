@@ -1,9 +1,9 @@
-export wavenumber_dftb, wavenumber_kcal
+export wavenumber_hartree, wavenumber_eV, wavenumber_kcal
 
 """
-	wavenumber_dftb(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
+	wavenumber_hartree(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
 
-Convert `eigenvalues` from Hartree Å^-2 g^-1 to `wavenumbers` in cm^-1. Made for DFTB hessian files.
+Convert `eigenvalues` from hartree bor^-2 g^-1 to `wavenumbers` in cm^-1. Made for DFTB hessian files.
 Output include `omega` in s^-2.
 
 ``ω = √v``
@@ -13,10 +13,10 @@ Output include `omega` in s^-2.
 # Arguments
 - `eigenvalues::Vector{Float64}`: The eigenvalues.
 """
-function wavenumber_dftb(eigenvalues::Vector{Float64})
+function wavenumber_hartree(eigenvalues::Vector{Float64})
 
-	# Conversion Hartree B^-2 g^-1 to s^-2: 
-	#   2625500.2 J/Hartree * (0.188972598857892E+11)^2 B^2 / m^2  * 1000 g / kg
+	# Conversion hartree bor^-2 g^-1 to s^-2: 
+	#   2625500.2 J/Hartree * (0.188972598857892E+11)^2 bor^2 / m^2  * 1000 g / kg
 	omega = sqrt.(eigenvalues * 2625500.2 * (0.188972598857892E+11)^2 * 1000)
 
 	# Convert wavenumbers in s^-2 to wavenumbers in cm^-1 : 1/(2π * c) * ω
@@ -25,6 +25,30 @@ function wavenumber_dftb(eigenvalues::Vector{Float64})
 	return wavenumbers, omega
 end
 
+"""
+	wavenumber_eV(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
+
+Convert `eigenvalues` from eV Å^-2 g^-1 to `wavenumbers` in cm^-1. Made for ASE hessian files.
+Output include `omega` in s^-2.
+
+``ω = √v``
+
+``ν̃ = 1/(2π * c) * ω``
+
+# Arguments
+- `eigenvalues::Vector{Float64}`: The eigenvalues.
+"""
+function wavenumber_eV(eigenvalues::Vector{Float64})
+
+	# Conversion eV Å^-2 g^-1 to s^-2: 
+	#   96485.307499 J/eV * 10^20 Å^2 / m^2 * 1000 g / kg)
+	omega = sqrt.(eigenvalues * 96485.307499 * 1.0E23)
+
+	# Convert wavenumbers in s^-2 to wavenumbers in cm^-1 : 1/(2π * c) * ω
+	wavenumbers = 1 / (2π * 2.99792458e10) * omega
+
+	return wavenumbers, omega
+end
 
 """
 	wavenumber_kcal(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
