@@ -1,4 +1,4 @@
-export write_modes, write_wavenumber_intensity
+export write_modes, write_wavenumber_intensity, write_calculate_output
 
 """
 	write_modes(eigenvector_internal, coord, atom_names; filename, amplitude, step)
@@ -49,7 +49,7 @@ function write_modes(eigenvectors_internal_normalized::Matrix{Float64}, atom_coo
 end
 
 """
-	write_wavenumber_frequency(wavenumbers, intensities; filename)
+	write_calculate_output(wavenumbers, intensities; filename = stdout)
 
 Write the wavenumbers and intensities to a file.
 
@@ -58,15 +58,15 @@ Write the wavenumbers and intensities to a file.
 - `intensities::Vector{Float64}`: The intensities.
 
 # Keyword Arguments
-- `filename::String`: The name of the file. Default is stdout.
+- `filename::String`: The name of the file. Default is stdout
 
 # Example
 ```julia
 julia> using VibrationalAnalysis
-julia> write_wavenumber_intensity(wavenumbers, intensities)
+julia> write_calculate_output(wavenumbers, intensities)
 ```
 """
-function write_wavenumber_intensity(wavenumbers, intensities; filename = stdout)
+function write_calculate_output(wavenumbers, intensities; filename = stdout)
 
 	# Open file
 	if filename != stdout
@@ -75,10 +75,10 @@ function write_wavenumber_intensity(wavenumbers, intensities; filename = stdout)
 		file = filename
 	end
 
-	println(file, "# Wavenumbers (cm-1)    Intensities (km mol-1)")
-
+	# Write wavenumbers and intensities
+	println(file, "# Wavenumbers (cm-1)\t\tIntensities (km mol-1)")
 	for i in eachindex(wavenumbers)
-		println(file, wavenumbers[i], "    ", intensities[i])
+		println(file, wavenumbers[i], "\t\t", intensities[i])
 	end
 
 	# Close file
@@ -92,7 +92,7 @@ end
 """
 	write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses; filename = stdout)
 
-Write the wavenumbers, intensities, force constants, reduced masses and eigenvectors to a file.
+Write the wavenumbers, intensities, force constants and reduced masses to a file.
 
 # Arguments
 - `wavenumbers::Vector{Float64}`: The wavenumbers.
@@ -106,16 +106,20 @@ Write the wavenumbers, intensities, force constants, reduced masses and eigenvec
 # Example
 ```julia
 julia> using VibrationalAnalysis
-julia> write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses, eigenvectors_internal_normalized)
+julia> write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses)
 ```
 """
 function write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses; filename = stdout)
 
 	# Open file
-	file = open(filename, "w")
+	if filename != stdout
+		file = open(filename, "w")
+	else
+		file = filename
+	end
 
 	# Write wavenumbers and intensities
-	println(file, "# Wavenumbers (cm-1)\t\tIntensities (km mol-1)\t\tForce constants (kcal/mol/Å^2)\t\tReduced masses (amu)")
+	println(file, "# Wavenumbers (cm-1)\t\tIntensities (km mol-1)\t\tForce constants (mdyn Å-1)\t\tReduced masses (amu)")
 	for i in eachindex(wavenumbers)
 		println(file, wavenumbers[i], "\t\t", intensities[i], "\t\t", force_constants[i], "\t\t", reduced_masses[i])
 	end
@@ -132,7 +136,7 @@ end
 """
 	write_calculate_output(wavenumbers, force_constants, reduced_masses, eigenvectors_internal_normalized; filename = stdout)
 
-Write the wavenumbers, force constants, reduced masses and eigenvectors to a file.
+Write the wavenumbers, force constants and reduced masses to a file.
 
 # Arguments
 - `wavenumbers::Vector{Float64}`: The wavenumbers.
@@ -151,10 +155,14 @@ julia> write_calculate_output(wavenumbers, force_constants, reduced_masses)
 function write_calculate_output(wavenumbers, force_constants, reduced_masses; filename = stdout)
 
 	# Open file
-	file = open(filename, "w")
+	if filename != stdout
+		file = open(filename, "w")
+	else
+		file = filename
+	end
 
 	# Write wavenumbers and intensities
-	println(file, "# Wavenumbers (cm-1)\t\tForce constants (kcal/mol/Å^2)\t\tReduced masses (amu)")
+	println(file, "# Wavenumbers (cm-1)\t\tForce constants (mdyn Å-1)\t\tReduced masses (amu)")
 	for i in eachindex(wavenumbers)
 		println(file, wavenumbers[i], "\t\t", force_constants[i], "\t\t", reduced_masses[i])
 	end
