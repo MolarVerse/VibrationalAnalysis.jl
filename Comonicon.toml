@@ -1,0 +1,12 @@
+name = "vibrationalanalysis"
+
+[install]
+completion = true
+quiet = false
+compile = "min"
+optimize = 2
+
+[command]
+static=true
+width=80
+dash=false
