@@ -88,3 +88,81 @@ function write_wavenumber_intensity(wavenumbers, intensities; filename = stdout)
 
 	return nothing
 end
+
+"""
+	write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses; filename = stdout)
+
+Write the wavenumbers, intensities, force constants, reduced masses and eigenvectors to a file.
+
+# Arguments
+- `wavenumbers::Vector{Float64}`: The wavenumbers.
+- `intensities::Vector{Float64}`: The intensities.
+- `force_constants::Vector{Float64}`: The force constants.
+- `reduced_masses::Vector{Float64}`: The reduced masses.
+
+# Keyword Arguments
+- `filename::String`: The name of the file. Default is stdout
+
+# Example
+```julia
+julia> using VibrationalAnalysis
+julia> write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses, eigenvectors_internal_normalized)
+```
+"""
+function write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses; filename = stdout)
+
+	# Open file
+	file = open(filename, "w")
+
+	# Write wavenumbers and intensities
+	println(file, "# Wavenumbers (cm-1)\t\tIntensities (km mol-1)\t\tForce constants (kcal/mol/Å^2)\t\tReduced masses (amu)")
+	for i in eachindex(wavenumbers)
+		println(file, wavenumbers[i], "\t\t", intensities[i], "\t\t", force_constants[i], "\t\t", reduced_masses[i])
+	end
+
+	# Close file
+	if filename != stdout
+		close(file)
+	end
+
+	return nothing
+end
+
+
+"""
+	write_calculate_output(wavenumbers, force_constants, reduced_masses, eigenvectors_internal_normalized; filename = stdout)
+
+Write the wavenumbers, force constants, reduced masses and eigenvectors to a file.
+
+# Arguments
+- `wavenumbers::Vector{Float64}`: The wavenumbers.
+- `force_constants::Vector{Float64}`: The force constants.
+- `reduced_masses::Vector{Float64}`: The reduced masses.
+
+# Keyword Arguments
+- `filename::String`: The name of the file. Default is stdout.
+
+# Example
+```julia
+julia> using VibrationalAnalysis
+julia> write_calculate_output(wavenumbers, force_constants, reduced_masses)
+```
+"""
+function write_calculate_output(wavenumbers, force_constants, reduced_masses; filename = stdout)
+
+	# Open file
+	file = open(filename, "w")
+
+	# Write wavenumbers and intensities
+	println(file, "# Wavenumbers (cm-1)\t\tForce constants (kcal/mol/Å^2)\t\tReduced masses (amu)")
+	for i in eachindex(wavenumbers)
+		println(file, wavenumbers[i], "\t\t", force_constants[i], "\t\t", reduced_masses[i])
+	end
+
+	# Close file
+	if filename != stdout
+		close(file)
+	end
+
+	return nothing
+end
