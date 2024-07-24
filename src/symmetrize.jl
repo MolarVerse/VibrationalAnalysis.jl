@@ -105,7 +105,7 @@ function masses_matrix(atom_masses::Vector{Float64})
 	# Create 3N x 3N matrix of masses
 	masses_repeat = repeat(atom_masses, inner = 3)
 	# Matrix of masses \sqrt{m_i m_j}
-	masses_matrix = (masses_repeat * masses_repeat') .^ (1 / 2)
+	_masses_matrix = (masses_repeat * masses_repeat') .^ (1 / 2)
 
-	return masses_matrix
+	return _masses_matrix
 end
