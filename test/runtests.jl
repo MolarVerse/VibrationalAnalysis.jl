@@ -15,3 +15,5 @@ include("observables.jl")
 include("calculate.jl")
 # Test Write Functions
 include("write.jl")
+# Test Check Functions
+include("check.jl")

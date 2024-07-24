@@ -25,7 +25,9 @@ julia> write_wavenumber_intensity(wavenumbers, intensities, filename="wavenumber
 """
 module VibrationalAnalysis
 
+using Printf
 using LinearAlgebra
+using Comonicon
 
 include("massesdict.jl")
 include("read_files.jl")
@@ -35,5 +37,7 @@ include("transformation.jl")
 include("observables.jl")
 include("write.jl")
 include("calculate.jl")
+include("check.jl")
+include("main.jl")
 
 end # module VibrationalAnalysis

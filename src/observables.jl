@@ -91,7 +91,7 @@ end
 """
 	force_constant(wavenumbers::Vector{Float64}, reduced_mass::Vector{Float64}) -> force_const::Vector{Float64}
 
-Calculate the force constant from the wavenumbers and the reduced mass.
+Calculate the force constant from the wavenumbers and the reduced mass in mdyn Å^-1.
 
 # Arguments
 - `wavenumbers::Vector{Float64}`: The wavenumbers.
