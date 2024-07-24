@@ -1,7 +1,7 @@
 export calculate
 
 """
-	calculate(atom_masses, atom_coords, atom_charges, hessian)
+	calculate(atom_masses, atom_coords, hessian)
 
 Calculates the wavenumbers, force constants and reduced masses from the atom masses, atom coordinates, and the hessian.
 
