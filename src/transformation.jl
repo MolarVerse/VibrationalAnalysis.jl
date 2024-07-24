@@ -14,7 +14,7 @@ function translational_modes(atom_masses::Vector{Float64})
 	masses_diagonal = [diagm(0 => [i, i, i]) for i in atom_masses]
 
 	# Convert to Matrix{Float64}
-	translation = hcat(masses_diagonal...)'
+	translation = sqrt.(hcat(masses_diagonal...)')
 
 	# Normalize the translation matrix
 	translation = translation ./ sqrt.(sum(translation .^ 2, dims = 1))
@@ -76,8 +76,8 @@ Calculate the transformation matrix.
 """
 function transformation_matrix(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64})
 
-	# Initialize transformation matrix 3N x 3N
-	transformation = zeros(size(atom_coords, 1) * 3, size(atom_coords, 1) * 3)
+	# Initialize transformation matrix 3N x 6
+	transformation = zeros(size(atom_coords, 1) * 3, 6)
 
 	# Calculate the translational modes
 	translation = translational_modes(atom_masses)
@@ -125,7 +125,7 @@ function internal_coordinates(atom_coords::Matrix{Float64}, atom_masses::Vector{
 	# Normalize Vectors
 	normalization = sqrt.(1 ./ sum(eigenvectors_internal .^ 2, dims = 1))[:] # convert to vector
 	# Normalize the eigenvectors
-	eigenvectors_internal_normalized = eigenvectors_internal .* normalization
+	eigenvectors_internal_normalized = eigenvectors_internal .* normalization'
 
 	return eigenvalues, eigenvectors_internal_normalized, normalization
 end
