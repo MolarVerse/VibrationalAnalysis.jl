@@ -1,44 +1,68 @@
+import VibrationalAnalysis: check_unit
+
 """
 CLI to calculate VibrationalAnalysis on a QMCFC or a PQ input.
 
+# Info
+
+Calculate the wavenumbers, intensities, force constants, reduced masses and eigenvectors of a QMCFC or a PQ input.
+
 # Args
 
-- `rst_file`: The restart file.
-- `hessian_file`: The hessian file.
-- `moldescriptor_file`: The moldescriptor file. (Optional)
+- `restart`: The restart file.
+- `hessian`: The hessian file.
 
 # Options
 
+- `--modesmatrix`: Write the modes in matrix notation to a file. If not specified, the modes in matrix notation will not be written.
+- `--moldescriptor`: The moldescriptor file. If not specified, the intensities will not be calculated.
 - `-o, --output`: The name of the output file. Default is stdout.
-- `--modes`: The name of the modes file. Default is modes.dat.
-- `-u, --unit`: The unit of the wavenumbers. Options are kcal, hartree and eV. Default is kcal.
+- `-u, --unit`: The energy unit in the Hessian file. Options are kcal, Hartree and eV. Default is kcal.
+
+# Flags
+
+- `--modes`: Write the modes in xyz format. If not specified, the modes will not be written.
 
 """
-@main function vibanal(rst_file::String, hessian_file::String, moldescriptor_file::String; output = "stdout", modes = "modes.dat", unit = "kcal")
+@main function vibrationalanalalysis(restart::String, hessian::String; unit = "kcal", moldescriptor = nothing, output = nothing, modes_matrix = nothing, modes::Bool = false)
 
-	# Check if the unit is valid - lowercase
-	unit = lowercase(unit)
-	if unit != "kcal" && unit != "hartree" && unit != "ev"
-		@error "Invalid unit. Options are kcal, hartree and eV."
-		return
+	# Check if the unit is valid
+	wavenumber = check_unit(unit)
+
+	# Read restart restart file 
+	atom_names, atom_masses, atom_coords, atom_types = read_rst(restart)
+
+	# Read the hessian
+	hessian = read_hessian(hessian)
+
+	# if moldescriptor_file is not nothing
+	if moldescriptor == nothing
+
+		# calculate the wavenumbers, force constants, reduced masses and eigenvectors
+		wavenumbers, force_constants, reduced_masses, eigenvectors_internal_normalized = calculate(atom_masses, atom_coords, hessian, wavenumber = wavenumber)
+
+		# write wavenumbers, force constants, reduced masses
+		write_calculate_output(wavenumbers, force_constants, reduced_masses, filename = output)
 	else
-		if unit == "kcal"
-			wavenumber = wavenumber_kcal
-		elseif unit == "hartree"
-			wavenumber = wavenumber_hartree
-		elseif unit == "ev"
-			wavenumber = wavenumber_eV
-		else
-			@error "Invalid unit. Options are kcal, hartree and eV."
-			return
-		end
+
+		# Read the atom charges
+		atom_charges = read_moldescriptor(moldescriptor, atom_names, atom_types)
+
+		# calculate the wavenumbers, intensities, force constants, reduced masses and eigenvectors
+		wavenumbers, intensities, force_constants, reduced_masses, eigenvectors_internal_normalized = calculate(atom_masses, atom_coords, atom_charges, hessian, wavenumber = wavenumber)
+
+		write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses, filename = output)
 	end
 
-	# Read the restart file, the hessian and the atom charges
-	wavenumbers, intensities, force_constants, reduced_masses, eigenvectors_internal_normalized = read_calculate(rst_file, hessian_file, moldescriptor_file, wavenumber = wavenumber)
+	# write the modes to a file
+	if modes_matrix != nothing
+		write_modes(eigenvectors_internal_normalized, filename = modes_matrix)
+	end
 
-	# Write the wavenumbers and intensities
-	write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses, filename = output)
+	# write modes in xyz format
+	if modes
+		write_modes(eigenvectors_internal_normalized, atom_coords, atom_names, filename = "modes")
+	end
 
-	return 
+	return
 end

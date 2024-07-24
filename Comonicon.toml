@@ -8,5 +8,5 @@ optimize = 2
 
 [command]
 static=true
-width=80
+width=100
 dash=false
