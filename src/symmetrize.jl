@@ -59,7 +59,7 @@ function mass_weighted_hessian(hessian::Matrix{Float64}, atom_masses::Vector{Flo
 	_masses_matrix = masses_matrix(atom_masses)
 
 	# Mass weight the hessian
-	hessian = hessian ./ masses_matrix
+	hessian = hessian ./ _masses_matrix
 
 	return hessian
 end
