@@ -1,5 +1,5 @@
 """
-	symmetrize_addition(hessian::Matrix{Float64}) -> hessian_sym::Matrix{Float64}
+	symmetrize_addition(hessian)
 
 Symmetrize a Hessian matrix by adding the transpose and dividing by 2.
 
@@ -7,13 +7,16 @@ Symmetrize a Hessian matrix by adding the transpose and dividing by 2.
 
 # Arguments
 - `hessian::Matrix{Float64}`: The Hessian matrix.
+
+# Returns
+- `hessian_sym::Matrix{Float64}`: The symmetrized Hessian matrix.
 """
 function symmetrize_addition(hessian::Matrix{Float64})
 	return (hessian + hessian') / 2
 end
 
 """
-	symmetrize_multiplication(hessian::Matrix{Float64}) -> hessian_sym::Matrix{Float64}
+	symmetrize_multiplication(hessian)
 
 Symmetrize a Hessian matrix by multiplying by the transpose and taking the square root of the absolute value of the eigenvalues.
 
@@ -25,6 +28,9 @@ Symmetrize a Hessian matrix by multiplying by the transpose and taking the squar
 
 # Arguments
 - `hessian::Matrix{Float64}`: The Hessian matrix.
+
+# Returns
+- `hessian_sym::Matrix{Float64}`: The symmetrized Hessian matrix.
 """
 function symmetrize_multiplication(hessian::Matrix{Float64})
 	_H = hessian' * hessian
@@ -34,13 +40,16 @@ function symmetrize_multiplication(hessian::Matrix{Float64})
 end
 
 """
-	mass_weight_hessian(hessian::Matrix{Float64}, atom_masses::Vector{Float64}) -> hessian::Matrix{Float64}
+	mass_weight_hessian(hessian, atom_masses)
 
 Mass weight a Hessian matrix using matrix multiplication for symmetrization.
 
 # Arguments
 - `hessian::Matrix{Float64}`: The Hessian matrix.
 - `atom_masses::Vector{Float64}`: The masses of the atoms.
+
+# Returns
+- `hessian::Matrix{Float64}`: The mass weighted Hessian matrix.
 """
 function mass_weighted_hessian(hessian::Matrix{Float64}, atom_masses::Vector{Float64})
 	# Symmetrize the hessian
@@ -56,13 +65,16 @@ function mass_weighted_hessian(hessian::Matrix{Float64}, atom_masses::Vector{Flo
 end
 
 """
-	mass_weight_hessian_add(hessian::Matrix{Float64}, atom_masses::Vector{Float64})
+	mass_weight_hessian_add(hessian, atom_masses)
 
 Mass weight a Hessian matrix using symmetrize by addition.
 
 # Arguments
 - `hessian::Matrix{Float64}`: The Hessian matrix.
 - `atom_masses::Vector{Float64}`: The masses of the atoms.
+
+# Returns
+- `hessian::Matrix{Float64}`: The mass weighted Hessian matrix.
 """
 function mass_weighted_hessian_add(hessian::Matrix{Float64}, atom_masses::Vector{Float64})
 	# Symmetrize the hessian
@@ -78,7 +90,7 @@ function mass_weighted_hessian_add(hessian::Matrix{Float64}, atom_masses::Vector
 end
 
 """
-	masses_matrix(atom_masses::Vector{Float64})
+	masses_matrix(atom_masses)
 
 Create a matrix of masses from a vector of atom masses.
 
