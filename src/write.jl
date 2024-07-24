@@ -1,12 +1,12 @@
 export write_modes, write_wavenumber_intensity, write_calculate_output
 
 """
-	write_modes(eigenvector_internal, coord, atom_names; filename, amplitude, step)
+	write_modes(eigenvectors_internal_normalized, coord, atom_names; filename, amplitude, step)
 
 Write the modes to a file in xyz format.
 
 # Arguments
-- `eigenvector_internal::Matrix{Float64}`: The eigenvectors in internal coordinates.
+- `eigenvectors_internal_normalized::Matrix{Float64}`: The eigenvectors in internal coordinates.
 - `coord::Matrix{Float64}`: The coordinates of the atoms.
 - `atom_names::Vector{String}`: The names of the atoms.
 
@@ -18,7 +18,6 @@ Write the modes to a file in xyz format.
 # Example
 ```julia
 julia> using VibrationalAnalysis
-julia> eigenvectors_internal_normalized = VibrationalAnalysis.normalize(eigenvectors_internal)
 julia> write_modes(eigenvectors_internal_normalized, atom_coords, atom_names)
 shell> cat modes-1.xyz
 ```
@@ -49,6 +48,47 @@ function write_modes(eigenvectors_internal_normalized::Matrix{Float64}, atom_coo
 end
 
 """
+	write_modes(eigenvectors_internal_normalized)
+
+Write the modes to a file in matrix format.
+
+# Arguments
+- `eigenvector_internal::Matrix{Float64}`: The eigenvectors in internal coordinates.
+
+# Keyword Arguments
+- `filename::String`: The name of the file. Default is stdout.
+
+# Example
+```julia
+julia> using VibrationalAnalysis
+julia> write_modes(eigenvectors_internal_normalized)
+shell> cat modes.dat
+```
+"""
+function write_modes(eigenvectors_internal_normalized::Matrix{Float64}; filename = nothing)
+	# Open file
+	if filename != nothing
+		file = open(filename, "w")
+	else
+		file = stdout
+	end
+
+	# Write the eigenvectors to the file in a matrix format
+	for i in 1:size(eigenvectors_internal_normalized)[1]
+		for j in 1:size(eigenvectors_internal_normalized)[2]
+			print(file, eigenvectors_internal_normalized[i, j], " ")
+		end
+		println(file)
+	end
+
+	if filename != nothing
+		close(file)
+	end
+
+	return nothing
+end
+
+"""
 	write_calculate_output(wavenumbers, intensities; filename = stdout)
 
 Write the wavenumbers and intensities to a file.
@@ -66,23 +106,24 @@ julia> using VibrationalAnalysis
 julia> write_calculate_output(wavenumbers, intensities)
 ```
 """
-function write_calculate_output(wavenumbers, intensities; filename = stdout)
+function write_calculate_output(wavenumbers, intensities; filename = nothing)
 
 	# Open file
-	if filename != stdout
+	if filename != nothing
 		file = open(filename, "w")
 	else
-		file = filename
+		file = stdout
 	end
 
 	# Write wavenumbers and intensities
-	println(file, "# Wavenumbers (cm-1)\t\tIntensities (km mol-1)")
+	println(file, "# Wavenumbers (cm-1)  Intensities (km mol-1)")
 	for i in eachindex(wavenumbers)
-		println(file, wavenumbers[i], "\t\t", intensities[i])
+		# format output to 8 decimal places with scientific notation
+		@printf(file, "%-8.8e\t%-8.8e\n", wavenumbers[i], intensities[i])
 	end
 
 	# Close file
-	if filename != stdout
+	if filename != nothing
 		close(file)
 	end
 
@@ -109,23 +150,24 @@ julia> using VibrationalAnalysis
 julia> write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses)
 ```
 """
-function write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses; filename = stdout)
+function write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses; filename = nothing)
 
 	# Open file
-	if filename != stdout
+	if filename != nothing
 		file = open(filename, "w")
 	else
-		file = filename
+		file = stdout
 	end
 
 	# Write wavenumbers and intensities
-	println(file, "# Wavenumbers (cm-1)\t\tIntensities (km mol-1)\t\tForce constants (mdyn Å-1)\t\tReduced masses (amu)")
+	println(file, "# Wavenumbers (cm-1)  Intensities (km mol-1)  Force constants (mdyn Å-1)  Reduced masses (amu)")
 	for i in eachindex(wavenumbers)
-		println(file, wavenumbers[i], "\t\t", intensities[i], "\t\t", force_constants[i], "\t\t", reduced_masses[i])
+		# format output to 8 decimal places with scientific notation
+		@printf(file, "%-8.8e\t%-8.8e\t%-8.8e\t%-8.8e\n", wavenumbers[i], intensities[i], force_constants[i], reduced_masses[i])
 	end
 
 	# Close file
-	if filename != stdout
+	if filename != nothing
 		close(file)
 	end
 
@@ -152,23 +194,24 @@ julia> using VibrationalAnalysis
 julia> write_calculate_output(wavenumbers, force_constants, reduced_masses)
 ```
 """
-function write_calculate_output(wavenumbers, force_constants, reduced_masses; filename = stdout)
+function write_calculate_output(wavenumbers, force_constants, reduced_masses; filename = nothing)
 
 	# Open file
-	if filename != stdout
+	if filename != nothing
 		file = open(filename, "w")
 	else
-		file = filename
+		file = stdout
 	end
 
 	# Write wavenumbers and intensities
-	println(file, "# Wavenumbers (cm-1)\t\tForce constants (mdyn Å-1)\t\tReduced masses (amu)")
+	println(file, "# Wavenumbers (cm-1)  Force constants (mdyn Å-1)  Reduced masses (amu)")
 	for i in eachindex(wavenumbers)
-		println(file, wavenumbers[i], "\t\t", force_constants[i], "\t\t", reduced_masses[i])
+		# format output to 8 decimal places with scientific notation
+		@printf(file, "%-8.8e\t%-8.8e\t%-8.8e\n", wavenumbers[i], force_constants[i], reduced_masses[i])
 	end
 
 	# Close file
-	if filename != stdout
+	if filename != nothing
 		close(file)
 	end
 
