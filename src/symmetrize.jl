@@ -46,10 +46,8 @@ function mass_weighted_hessian(hessian::Matrix{Float64}, atom_masses::Vector{Flo
 	# Symmetrize the hessian
 	hessian = symmetrize_multiplication(hessian)
 
-	# Create 3N x 3N matrix of masses
-	masses_repeat = repeat(atom_masses, inner = 3)
-	# Matrix of masses \sqrt{m_i m_j}
-	masses_matrix = (masses_repeat * masses_repeat') .^ (1 / 2)
+	# Get masses matrix
+	_masses_matrix = masses_matrix(atom_masses)
 
 	# Mass weight the hessian
 	hessian = hessian ./ masses_matrix
@@ -70,13 +68,32 @@ function mass_weighted_hessian_add(hessian::Matrix{Float64}, atom_masses::Vector
 	# Symmetrize the hessian
 	hessian = symmetrize_addition(hessian)
 
+	# Get masses matrix
+	_masses_matrix = masses_matrix(atom_masses)
+
+	# Mass weight the hessian
+	hessian = hessian ./ _masses_matrix
+
+	return hessian
+end
+
+"""
+	masses_matrix(atom_masses::Vector{Float64})
+
+Create a matrix of masses from a vector of atom masses.
+
+# Arguments
+- `atom_masses::Vector{Float64}`: The masses of the atoms.
+
+# Returns
+- `masses_matrix::Matrix{Float64}`: The matrix of masses.
+"""
+function masses_matrix(atom_masses::Vector{Float64})
+	
 	# Create 3N x 3N matrix of masses
 	masses_repeat = repeat(atom_masses, inner = 3)
 	# Matrix of masses \sqrt{m_i m_j}
 	masses_matrix = (masses_repeat * masses_repeat') .^ (1 / 2)
 
-	# Mass weight the hessian
-	hessian = hessian ./ masses_matrix
-
-	return hessian
+	return masses_matrix
 end
