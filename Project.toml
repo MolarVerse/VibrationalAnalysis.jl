@@ -1,7 +1,7 @@
 name = "VibrationalAnalysis"
 uuid = "04082e5c-1d57-4577-9a0f-61e6cd56dade"
 authors = ["Josef M. Gallmetzer"]
-version = "0.3.0"
+version = "0.3.1"
 
 [deps]
 Comonicon = "863f3e99-da2a-4334-8734-de3dacbe5542"
