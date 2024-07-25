@@ -14,8 +14,8 @@ Calculate the wavenumbers, intensities, force constants, reduced masses and eige
 
 # Options
 
-- `--modesmatrix`: Write the modes in matrix notation to a file. If not specified, the modes in matrix notation will not be written.
-- `--moldescriptor`: The moldescriptor file. If not specified, the intensities will not be calculated.
+- `-n, --normal-modes`: Write the modes in matrix notation to a file. If not specified, the modes in matrix notation will not be written.
+- `-m, --moldescriptor`: The moldescriptor file. If not specified, the intensities will not be calculated.
 - `-o, --output`: The name of the output file. Default is stdout.
 - `-u, --unit`: The energy unit in the Hessian file. Options are kcal, Hartree and eV. Default is kcal.
 
@@ -24,7 +24,7 @@ Calculate the wavenumbers, intensities, force constants, reduced masses and eige
 - `--modes`: Write the modes in xyz format. If not specified, the modes will not be written.
 
 """
-@main function vibrationalanalalysis(restart::String, hessian::String; unit = "kcal", moldescriptor = nothing, output = nothing, modes_matrix = nothing, modes::Bool = false)
+@main function vibrationalanalalysis(restart::String, hessian::String; unit = "kcal", moldescriptor = nothing, output = nothing, normal_modes = nothing, modes::Bool = false)
 
 	# Check if the unit is valid
 	wavenumber = check_unit(unit)
@@ -55,8 +55,8 @@ Calculate the wavenumbers, intensities, force constants, reduced masses and eige
 	end
 
 	# write the modes to a file
-	if modes_matrix != nothing
-		write_modes(eigenvectors_internal_normalized, filename = modes_matrix)
+	if normal_modes != nothing
+		write_modes(eigenvectors_internal_normalized, filename = normal_modes)
 	end
 
 	# write modes in xyz format
