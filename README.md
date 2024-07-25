@@ -35,6 +35,7 @@ julia> read_calculate("restart.rst", "hessian.dat", "moldescriptor.dat")
 This package was developed as part of the [MolarVerse](https://github.com/MolarVerse) organization. Significant contributions were made by:
 - Josef M. Gallmetzer @galjos
 - Jakob Gamper @97gamjak
+- Thomas S. Hofer
 
 ## Citation
 If you use this package in your research, please cite it using the following DOI: [10.5281/zenodo.10829271](https://doi.org/10.5281/zenodo.10829271)
