@@ -27,8 +27,7 @@ Make sure you have `~/.julia/bin` in your PATH.
 
 ## Usage
 ```julia-repl
-julia> using VibrationalAnalysis
-julia> read_calculate("restart.rst", "hessian.dat", "moldescriptor.dat")
+shell> vibrationalanalysis -h
 ```
 
 # Acknowledgements
