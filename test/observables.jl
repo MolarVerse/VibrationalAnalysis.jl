@@ -19,6 +19,14 @@ end
     @test omega ≈ [2.0455e13] rtol=1e-4 
 end
 
+@testset "Wave Number signed modes" begin
+    wavenumber, omega = wavenumber_kcal([-1.0, 0.0, 1.0])
+    @test wavenumber ≈ [-108.5914, 0.0, 108.5914] atol=1e-4
+    @test omega[1] < 0.0
+    @test omega[2] == 0.0
+    @test omega[3] > 0.0
+end
+
 @testset "Reduced Mass" begin
     @test reduced_mass([1.0, 2.0, 3.0]) == [1.0, 4.0, 9.0]
 end

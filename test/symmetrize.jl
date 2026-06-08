@@ -1,5 +1,6 @@
 using VibrationalAnalysis: symmetrize_addition, symmetrize_multiplication, read_hessian, read_rst, mass_weighted_hessian, mass_weighted_hessian_add
 using Test
+using LinearAlgebra
 
 # Test symmetrize matrices src/symmetrize.jl
 
@@ -23,10 +24,15 @@ end
         mass_weight_hessian = mass_weighted_hessian(hessian, atom_masses)
         @test mass_weight_hessian isa Matrix{Float64}
 
-        # Test Symmetrize Multiplication
+        # Test default symmetric averaging
         hessian = [4.0 2.0 0.5; 2.0 4.0 0.0; 0.5 0.0 4.0]
         atom_masses = [2.0]
         @test mass_weighted_hessian(hessian, atom_masses) ≈ [2.0 1.0 0.25; 1.0 2.0 0.0; 0.25 0.0 2.0] atol=1e-5
         @test mass_weighted_hessian_add(hessian, atom_masses) == [2.0 1.0 0.25; 1.0 2.0 0.0; 0.25 0.0 2.0] 
+
+        # Preserve Hessian sign instead of replacing it with sqrt(H' * H)
+        hessian = diagm(0 => [-4.0, 2.0, 8.0])
+        @test eigvals(mass_weighted_hessian(hessian, [1.0])) ≈ [-4.0, 2.0, 8.0]
+        @test eigvals(mass_weighted_hessian(hessian, [1.0], sign = -1.0)) ≈ [-8.0, -2.0, 4.0]
 
 end

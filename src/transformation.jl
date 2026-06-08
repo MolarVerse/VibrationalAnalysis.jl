@@ -1,3 +1,5 @@
+const LINEAR_ROTATION_RTOL = 1e-6
+
 """
 	translational_modes(atom_masses)
 	
@@ -56,8 +58,15 @@ function rotational_modes(atom_coords::Matrix{Float64}, atom_masses::Vector{Floa
 	rotation[:, 2] += ((P[:, 3]*X[1, :]'.-P[:, 1]*X[3, :]').*sqrt.(atom_masses))[:]
 	rotation[:, 3] += ((P[:, 1]*X[2, :]'.-P[:, 2]*X[1, :]').*sqrt.(atom_masses))[:]
 
-	# Normalize the rotation matrix
-	rotation = rotation ./ sqrt.(sum(rotation .^ 2, dims = 1))
+	# Normalize only non-zero rotations. Linear molecules have two rotations.
+	rotation_norms = sqrt.(sum(rotation .^ 2, dims = 1))[:]
+	threshold = LINEAR_ROTATION_RTOL * max(1.0, maximum(rotation_norms))
+	keep = rotation_norms .> threshold
+	rotation = rotation[:, keep]
+
+	if !isempty(rotation_norms[keep])
+		rotation = rotation ./ rotation_norms[keep]'
+	end
 
 	return rotation
 end
@@ -75,20 +84,40 @@ Calculate the transformation matrix.
 - `transformation::Matrix{Float64}`: The transformation matrix.
 """
 function transformation_matrix(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64})
-
-	# Initialize transformation matrix 3N x 6
-	transformation = zeros(size(atom_coords, 1) * 3, 6)
-
 	# Calculate the translational modes
 	translation = translational_modes(atom_masses)
 	# Calculate the rotational modes
 	rotation = rotational_modes(atom_coords, atom_masses)
 
 	# Combine the translational and rotational modes
-	transformation[:, 1:3] = translation
-	transformation[:, 4:6] = rotation
+	transformation = hcat(translation, rotation)
 
 	return transformation
+end
+
+"""
+	internal_subspace(atom_coords, atom_masses)
+
+Calculate the orthonormal complement of the translational and rotational modes.
+
+# Arguments
+- `atom_coords::Matrix{Float64}`: The coordinates of the atoms.
+- `atom_masses::Vector{Float64}`: The masses of the atoms.
+
+# Returns
+- `subspace::Matrix{Float64}`: The internal-coordinate basis.
+"""
+function internal_subspace(atom_coords::Matrix{Float64}, atom_masses::Vector{Float64})
+	transformation = transformation_matrix(atom_coords, atom_masses)
+	total_modes = size(atom_coords, 1) * 3
+	external_modes = size(transformation, 2)
+
+	if external_modes >= total_modes
+		return zeros(total_modes, 0)
+	end
+
+	q = qr(transformation).Q
+	return Matrix(q[:, (external_modes + 1):total_modes])
 end
 
 """
@@ -115,7 +144,7 @@ function internal_coordinates(atom_coords::Matrix{Float64}, atom_masses::Vector{
 	# Calculate the hessian in internal coordinates
 	internal_hessian = transformation' * hessian_mw * transformation
 	# Calculate the eigenvalues and eigenvectors of the hessian in internal coordinates
-	eigenvalues, eigenvectors = eigen(internal_hessian)
+	eigenvalues, eigenvectors = eigen(Symmetric(internal_hessian))
 
 	# Calculate the masses matrix
 	masses_matrix = diagm(0 => [1 / sqrt(i) for i in atom_masses for j in 1:3])
