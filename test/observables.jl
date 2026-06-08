@@ -1,4 +1,4 @@
-using VibrationalAnalysis: wavenumber_hartree, wavenumber_eV, wavenumber_kcal, reduced_mass, force_constant
+using VibrationalAnalysis: wavenumber_hartree, wavenumber_eV, wavenumber_kcal, reduced_mass, force_constant, infrared_intensity
 using Test
 
 @testset "Wave Number hartree" begin
@@ -28,3 +28,17 @@ end
 
 end
 
+@testset "Infrared Intensity" begin
+    eigenvectors = [
+        1.0 0.0
+        0.0 1.0
+        0.0 0.0
+        0.0 0.0
+        0.0 0.0
+        0.0 0.0
+    ]
+    intensities = infrared_intensity(eigenvectors, [1.0, -1.0], [1.0, 2.0])
+
+    @test intensities isa Vector{Float64}
+    @test length(intensities) == 2
+end

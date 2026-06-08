@@ -115,9 +115,9 @@ Calculate the infrared intensity in km mol^-1 from the normalization eigen matri
 """
 function infrared_intensity(eigenvectors_internal_normalized::Matrix{Float64}, atom_charges::Vector{Float64}, reduced_masses::Vector{Float64})
 
-	intensities = []
+	intensities = Vector{Float64}(undef, size(eigenvectors_internal_normalized, 2))
 
-	for i in 1:size(eigenvectors_internal_normalized)[1]
+	for i in axes(eigenvectors_internal_normalized, 2)
 
 		# Eigenvector of the i-th mode
 		eigenvector = reshape(eigenvectors_internal_normalized[:, i], 3, :)'
@@ -125,7 +125,7 @@ function infrared_intensity(eigenvectors_internal_normalized::Matrix{Float64}, a
 		# Conversion factor taken from: http://thiele.ruc.dk/~spanget/help/g09/k_constants.html
 		intensity = sum((sum(eigenvector .* atom_charges, dims = 1) / 0.2081943 / norm(eigenvector)) .^ 2 / reduced_masses[i] * 42.2561)
 
-		push!(intensities, intensity)
+		intensities[i] = intensity
 	end
 
 	return intensities
