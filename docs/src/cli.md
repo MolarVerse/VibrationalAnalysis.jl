@@ -1,4 +1,4 @@
-# Intallation of the CLI
+# Installation of the CLI
 
 If you want to use the command line interface, you can install it by running the following command:
 
@@ -8,13 +8,13 @@ julia> VibrationalAnalysis.comonicon_install()
 ```
 Make sure you have `~/.julia/bin` in your PATH.
 
-or by running the following command:
+You can also install the package and CLI in one shell command:
 
 ```bash
 julia -e 'using Pkg; Pkg.add("VibrationalAnalysis"); using VibrationalAnalysis; VibrationalAnalysis.comonicon_install()'
 ```
 
-or by build the package from in your default environment:
+Or build the package from your default environment:
 
 ```julia-repl
 julia> using Pkg
@@ -27,4 +27,22 @@ Run the following command to see the available options:
 
 ```bash
 vibrationalanalysis -h
+```
+
+Run a calculation with restart and Hessian files:
+
+```bash
+vibrationalanalysis restart.rst hessian.dat --unit kcal --output wavenumbers.dat
+```
+
+Include intensities by passing a moldescriptor file:
+
+```bash
+vibrationalanalysis restart.rst hessian.dat --moldescriptor moldescriptor.dat --output wavenumbers.dat
+```
+
+Write normal modes in matrix notation or xyz trajectories:
+
+```bash
+vibrationalanalysis restart.rst hessian.dat --normal-modes normal_modes.dat --modes
 ```

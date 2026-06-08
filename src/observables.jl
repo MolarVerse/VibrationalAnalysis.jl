@@ -3,7 +3,7 @@ export wavenumber_hartree, wavenumber_eV, wavenumber_kcal
 """
 	wavenumber_hartree(eigenvalues::Vector{Float64}) -> wavenumbers::Vector{Float64}, omega::Vector{Float64}
 
-Convert `eigenvalues` from hartree bor^-2 g^-1 to `wavenumbers` in cm^-1. Made for DFTB hessian files.
+Convert `eigenvalues` from hartree bohr^-2 g^-1 to `wavenumbers` in cm^-1. Made for DFTB hessian files.
 Output include `omega` in s^-2.
 
 ``ω = √v``
@@ -15,8 +15,8 @@ Output include `omega` in s^-2.
 """
 function wavenumber_hartree(eigenvalues::Vector{Float64})
 
-	# Conversion hartree bor^-2 g^-1 to s^-2: 
-	#   2625500.2 J/Hartree * (0.188972598857892E+11)^2 bor^2 / m^2  * 1000 g / kg
+	# Conversion hartree bohr^-2 g^-1 to s^-2:
+	#   2625500.2 J/Hartree * (0.188972598857892E+11)^2 bohr^2 / m^2  * 1000 g / kg
 	omega = sqrt.(eigenvalues * 2625500.2 * (0.188972598857892E+11)^2 * 1000)
 
 	# Convert wavenumbers in s^-2 to wavenumbers in cm^-1 : 1/(2π * c) * ω
