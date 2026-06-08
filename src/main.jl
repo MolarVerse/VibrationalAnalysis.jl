@@ -24,7 +24,7 @@ Calculate the wavenumbers, intensities, force constants, reduced masses and eige
 - `--modes`: Write the modes in xyz format. If not specified, the modes will not be written.
 
 """
-@main function vibrationalanalalysis(restart::String, hessian::String; unit = "kcal", moldescriptor = nothing, output = nothing, normal_modes = nothing, modes::Bool = false)
+Comonicon.@main function vibrationalanalysis(restart::String, hessian::String; unit = "kcal", moldescriptor = nothing, output = nothing, normal_modes = nothing, modes::Bool = false)
 
 	# Check if the unit is valid
 	wavenumber = check_unit(unit)
