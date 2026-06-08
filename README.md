@@ -17,7 +17,7 @@ julia> ]
 pkg> add VibrationalAnalysis
 ```
 
-## Intallation of the CLI
+## Installation of the CLI
 If you want to use the command line interface, you can install it by running the following command:
 ```julia-repl
 julia> using VibrationalAnalysis

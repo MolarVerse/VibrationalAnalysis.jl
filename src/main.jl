@@ -29,13 +29,13 @@ Comonicon.@main function vibrationalanalysis(restart::String, hessian::String; u
 	# Check if the unit is valid
 	wavenumber = check_unit(unit)
 
-	# Read restart restart file 
+	# Read restart file
 	atom_names, atom_masses, atom_coords, atom_types = read_rst(restart)
 
 	# Read the hessian
 	hessian = read_hessian(hessian)
 
-	# if moldescriptor_file is not nothing
+	# If moldescriptor_file is not nothing
 	if moldescriptor == nothing
 
 		# calculate the wavenumbers, force constants, reduced masses and eigenvectors
