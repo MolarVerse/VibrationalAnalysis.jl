@@ -21,7 +21,7 @@ julia> calculate(atom_masses, atom_coords, atom_charges, hessian)
 Or directly perform a vibrational analysis with atom masses, atom coordinates, atom charges and hessian of the system.
 
 ```julia-repl
-julia> wavenumbers, intensities, _, _ = calculate(atom_masses, atom_coords, atom_charges, hessian)
+julia> wavenumbers, intensities, _, _, _ = calculate(atom_masses, atom_coords, atom_charges, hessian)
 julia> write_wavenumber_intensity(wavenumbers, intensities, filename="wavenumbers.dat")
 ```
 

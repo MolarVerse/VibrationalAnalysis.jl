@@ -72,6 +72,13 @@ end
 		@test wavenumbers_test[2] == test_string[2]
 		@test wavenumbers_test[3] == test_string[3]
 		@test wavenumbers_test[4] == test_string[4]
+
+		write_wavenumber_intensity(wavenumbers, intensities, filename = "test_wavenumber_intensity.dat")
+		wavenumbers_test = readlines("test_wavenumber_intensity.dat")
+		@test wavenumbers_test[1] == test_string[1]
+		@test wavenumbers_test[2] == test_string[2]
+		@test wavenumbers_test[3] == test_string[3]
+		@test wavenumbers_test[4] == test_string[4]
 	end
 end
 

@@ -131,6 +131,15 @@ function write_calculate_output(wavenumbers, intensities; filename = nothing)
 end
 
 """
+	write_wavenumber_intensity(wavenumbers, intensities; filename = stdout)
+
+Write the wavenumbers and intensities to a file.
+"""
+function write_wavenumber_intensity(wavenumbers, intensities; filename = nothing)
+	return write_calculate_output(wavenumbers, intensities, filename = filename)
+end
+
+"""
 	write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses; filename = stdout)
 
 Write the wavenumbers, intensities, force constants and reduced masses to a file.

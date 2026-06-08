@@ -6,7 +6,7 @@ export wavenumber_hartree, wavenumber_eV, wavenumber_kcal
 Convert `eigenvalues` from hartree bohr^-2 g^-1 to `wavenumbers` in cm^-1. Made for DFTB hessian files.
 Output include `omega` in s^-2.
 
-``ω = √v``
+``ω = sign(v)√|v|``
 
 ``ν̃ = 1/(2π * c) * ω``
 
@@ -17,7 +17,7 @@ function wavenumber_hartree(eigenvalues::Vector{Float64})
 
 	# Conversion hartree bohr^-2 g^-1 to s^-2:
 	#   2625500.2 J/Hartree * (0.188972598857892E+11)^2 bohr^2 / m^2  * 1000 g / kg
-	omega = sqrt.(eigenvalues * 2625500.2 * (0.188972598857892E+11)^2 * 1000)
+	omega = signed_sqrt(eigenvalues * 2625500.2 * (0.188972598857892E+11)^2 * 1000)
 
 	# Convert wavenumbers in s^-2 to wavenumbers in cm^-1 : 1/(2π * c) * ω
 	wavenumbers = 1 / (2π * 2.99792458e10) * omega
@@ -31,7 +31,7 @@ end
 Convert `eigenvalues` from eV Å^-2 g^-1 to `wavenumbers` in cm^-1. Made for ASE hessian files.
 Output include `omega` in s^-2.
 
-``ω = √v``
+``ω = sign(v)√|v|``
 
 ``ν̃ = 1/(2π * c) * ω``
 
@@ -42,7 +42,7 @@ function wavenumber_eV(eigenvalues::Vector{Float64})
 
 	# Conversion eV Å^-2 g^-1 to s^-2: 
 	#   96485.307499 J/eV * 10^20 Å^2 / m^2 * 1000 g / kg)
-	omega = sqrt.(eigenvalues * 96485.307499 * 1.0E23)
+	omega = signed_sqrt(eigenvalues * 96485.307499 * 1.0E23)
 
 	# Convert wavenumbers in s^-2 to wavenumbers in cm^-1 : 1/(2π * c) * ω
 	wavenumbers = 1 / (2π * 2.99792458e10) * omega
@@ -56,7 +56,7 @@ end
 Convert `eigenvalues` from kcal Å^-2 g^-1 to `wavenumbers` in cm^-1. Made for QMCFC hessian files.
 Output include `omega` in s^-2.
 
-``ω = √v``
+``ω = sign(v)√|v|``
 
 ``ν̃ = 1/(2π * c) * ω``
 
@@ -67,12 +67,16 @@ function wavenumber_kcal(eigenvalues::Vector{Float64})
 
 	# Convert eigenvalues in kcal Å^-2 g^-1 to wavenumbers in s^-2: 
 	#   4184 * 10^23 (4184 J/kcal * 10^20 Å^2 / m^2 * 1000 g / kg)
-	omega = sqrt.(eigenvalues * 4184.0 * 1.0E23)
+	omega = signed_sqrt(eigenvalues * 4184.0 * 1.0E23)
 
 	# Convert wavenumbers in s^-2 to wavenumbers in cm^-1 : 1/(2π * c) * ω
 	wavenumbers = 1 / (2π * 2.99792458e10) * omega
 
 	return wavenumbers, omega
+end
+
+function signed_sqrt(values::Vector{Float64})
+	return sign.(values) .* sqrt.(abs.(values))
 end
 
 """
