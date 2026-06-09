@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1 - 2026-06-09
+
+- expand the documentation with quickstart, input-file, validation, and migration pages
+- add a simple Makie-based vibrational spectrum example to the docs
+- clarify CLI usage, common failure cases, and the `0.4` structure-input transition
+
 ## 0.4.0 - 2026-06-09
 
 - add `read_structure(...)` as the primary public structure reader for restart and XYZ inputs
