@@ -9,7 +9,7 @@ Calculate the wavenumbers, intensities, force constants, reduced masses and eige
 
 # Args
 
-- `restart`: The restart file.
+- `restart`: The restart or XYZ structure file.
 - `hessian`: The hessian file.
 
 # Options
@@ -29,8 +29,8 @@ Comonicon.@main function vibrationalanalysis(restart::String, hessian::String; u
 	# Check if the unit is valid
 	wavenumber = check_unit(unit)
 
-	# Read restart file
-	atom_names, atom_masses, atom_coords, atom_types = read_rst(restart)
+	# Read structure file
+	atom_names, atom_masses, atom_coords, atom_types = read_structure(restart)
 
 	# Read the hessian
 	hessian = read_hessian(hessian)

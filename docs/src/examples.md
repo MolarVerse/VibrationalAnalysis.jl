@@ -16,6 +16,18 @@ wavenumbers, intensities, force_constants, reduced_masses, normal_modes =
 write_calculate_output(wavenumbers, intensities, force_constants, reduced_masses)
 ```
 
+The same workflow works with a standard single-structure XYZ file when all atoms belong to the same molecule type.
+
+```julia
+using VibrationalAnalysis
+
+atom_names, atom_masses, atom_coords, atom_types = read_xyz("path/to/file.xyz")
+hessian = read_hessian("path/to/file.hessian")
+
+wavenumbers, force_constants, reduced_masses, normal_modes =
+    calculate(atom_masses, atom_coords, hessian)
+```
+
 Calculate the vibrational analysis without intensities by providing atomic masses, atomic coordinates, and the Hessian directly.
 
 ```julia
