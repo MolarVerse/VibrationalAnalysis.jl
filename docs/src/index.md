@@ -12,6 +12,8 @@
 
 This package provides tools to perform [vibrational analysis](https://gaussian.com/vib/) of molecules. It is based on the output of QMCFC and [PQ](https://github.com/MolarVerse/PQ) molecular dynamics codes developed at the [University of Innsbruck](https://www.uibk.ac.at/).
 
+Version `0.4.0` accepts either restart files or standard single-structure XYZ files through the public `read_structure(...)` entrypoint and the CLI.
+
 ## Installation
 To install the package, run the following command in the Julia REPL:
 ```julia-repl
@@ -31,6 +33,15 @@ Make sure you have `~/.julia/bin` in your PATH.
 ```julia-repl
 shell> vibrationalanalysis -h
 ```
+
+## Documentation map
+
+- [Quickstart](quickstart.md): end-to-end restart and XYZ workflows with real fixture outputs
+- [Input Files](input-files.md): exact file expectations for restart, XYZ, Hessian, and moldescriptor inputs
+- [CLI](cli.md): command-line recipes, output files, and common failure cases
+- [Examples](examples.md): API-level examples for units, Hessian sign conventions, and writing modes
+- [Validation](validation.md): current regression coverage, reference values, and linear/near-linear notes
+- [Migration](migration.md): what changed in `0.4.0`
 
 # Acknowledgements
 This package was developed as part of the [MolarVerse](https://github.com/MolarVerse) organization. Significant contributions were made by:
