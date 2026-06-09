@@ -29,10 +29,10 @@ Run the following command to see the available options:
 vibrationalanalysis -h
 ```
 
-Run a calculation with restart and Hessian files:
+Run a calculation with structure and Hessian files:
 
 ```bash
-vibrationalanalysis restart.rst hessian.dat --unit kcal --output wavenumbers.dat
+vibrationalanalysis structure.rst hessian.dat --unit kcal --output wavenumbers.dat
 ```
 
 Run the same calculation from a standard single-structure XYZ file:
@@ -44,13 +44,13 @@ vibrationalanalysis structure.xyz hessian.dat --unit kcal --output wavenumbers.d
 Include intensities by passing a moldescriptor file:
 
 ```bash
-vibrationalanalysis restart.rst hessian.dat --moldescriptor moldescriptor.dat --output wavenumbers.dat
+vibrationalanalysis structure.rst hessian.dat --moldescriptor moldescriptor.dat --output wavenumbers.dat
 ```
 
-When an XYZ file is used, atom types default to `1` for all atoms. Multi-molecule moldescriptor files therefore still require restart input with explicit atom-type information.
+When an XYZ file is used, atom types default to `1` for all atoms. If `--moldescriptor` is used with an XYZ file, the moldescriptor file must contain exactly one molecule definition because XYZ files do not encode molecule-type assignments.
 
 Write normal modes in matrix notation or xyz trajectories:
 
 ```bash
-vibrationalanalysis restart.rst hessian.dat --normal-modes normal_modes.dat --modes
+vibrationalanalysis structure.rst hessian.dat --normal-modes normal_modes.dat --modes
 ```

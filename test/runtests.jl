@@ -13,6 +13,8 @@ include("transformation.jl")
 include("observables.jl")
 # Test Calculate Functions
 include("calculate.jl")
+# Test CLI entrypoint
+include("main.jl")
 # Test Write Functions
 include("write.jl")
 # Test Check Functions

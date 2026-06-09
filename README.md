@@ -30,7 +30,9 @@ Make sure you have `~/.julia/bin` in your PATH.
 shell> vibrationalanalysis -h
 ```
 
-The CLI accepts either restart files or standard single-structure XYZ files as the geometry input.
+The CLI accepts either restart files or standard single-structure XYZ files as the structure input.
+
+The recommended programmatic entrypoint is `read_structure(...)`, which dispatches to restart or XYZ parsing.
 
 # Acknowledgements
 This package was developed as part of the [MolarVerse](https://github.com/MolarVerse) organization. Significant contributions were made by:

@@ -12,8 +12,8 @@ This module contains functions to perform vibrational analysis on a QMCFC output
 Can read directly from restart files, XYZ files, moldescriptor files and hessian files and perform vibrational analysis on the system.
 
 ```julia-repl
-julia> atom_names, atom_masses, atom_coords, atom_types = read_rst("restart.rst")
-julia> atom_names, atom_masses, atom_coords, atom_types = read_xyz("structure.xyz")
+julia> atom_names, atom_masses, atom_coords, atom_types = read_structure("structure.rst")
+julia> atom_names, atom_masses, atom_coords, atom_types = read_structure("structure.xyz")
 julia> hessian = read_hessian("hessian.dat")
 julia> atom_charges = read_moldescriptor("moldescriptor.dat", atom_names, atom_types)
 julia> calculate(atom_masses, atom_coords, atom_charges, hessian)
