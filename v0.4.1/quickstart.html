@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Quickstart · VibrationalAnalysis.jl</title><meta name="title" content="Quickstart · VibrationalAnalysis.jl"/><meta property="og:title" content="Quickstart · VibrationalAnalysis.jl"/><meta property="twitter:title" content="Quickstart · VibrationalAnalysis.jl"/><meta name="description" content="Documentation for VibrationalAnalysis.jl."/><meta property="og:description" content="Documentation for VibrationalAnalysis.jl."/><meta property="twitter:description" content="Documentation for VibrationalAnalysis.jl."/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="index.html"><img src="assets/logo.png" alt="VibrationalAnalysis.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="index.html">VibrationalAnalysis.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="index.html">Home</a></li><li><a class="tocitem" href="installation.html">Installation</a></li><li class="is-active"><a class="tocitem" href="quickstart.html">Quickstart</a><ul class="internal"><li><a class="tocitem" href="#Restart-input-with-intensities"><span>Restart input with intensities</span></a></li><li><a class="tocitem" href="#Plotting-the-vibrational-spectrum"><span>Plotting the vibrational spectrum</span></a></li><li><a class="tocitem" href="#XYZ-input-without-intensities"><span>XYZ input without intensities</span></a></li><li><a class="tocitem" href="#Writing-tabulated-output"><span>Writing tabulated output</span></a></li><li><a class="tocitem" href="#Writing-normal-modes"><span>Writing normal modes</span></a></li></ul></li><li><a class="tocitem" href="input-files.html">Input Files</a></li><li><a class="tocitem" href="cli.html">CLI</a></li><li><a class="tocitem" href="examples.html">Examples</a></li><li><a class="tocitem" href="validation.html">Validation</a></li><li><a class="tocitem" href="migration.html">Migration</a></li><li><a class="tocitem" href="license.html">License</a></li><li><a class="tocitem" href="api.html">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href="quickstart.html">Quickstart</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href="quickstart.html">Quickstart</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/MolarVerse/VibrationalAnalysis.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/MolarVerse/VibrationalAnalysis.jl/blob/main/docs/src/quickstart.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Quickstart"><a class="docs-heading-anchor" href="#Quickstart">Quickstart</a><a id="Quickstart-1"></a><a class="docs-heading-anchor-permalink" href="#Quickstart" title="Permalink"></a></h1><p>This page covers the three main workflows in <code>0.4.0</code>:</p><ol><li>restart input plus Hessian and moldescriptor</li><li>XYZ input plus Hessian</li><li>writing results and normal modes</li></ol><p>The examples below use the package test fixtures so the numbers are reproducible.</p><h2 id="Restart-input-with-intensities"><a class="docs-heading-anchor" href="#Restart-input-with-intensities">Restart input with intensities</a><a id="Restart-input-with-intensities-1"></a><a class="docs-heading-anchor-permalink" href="#Restart-input-with-intensities" title="Permalink"></a></h2><pre><code class="language-julia hljs">using VibrationalAnalysis
+
+data = joinpath(pkgdir(VibrationalAnalysis), &quot;test&quot;, &quot;data&quot;)
+structure = joinpath(data, &quot;test_h2o.rst&quot;)
+hessian_file = joinpath(data, &quot;test_hessian_h2o.dat&quot;)
+moldescriptor = joinpath(data, &quot;test_moldescriptor.dat&quot;)
+
+atom_names, atom_masses, atom_coords, atom_types = read_structure(structure)
+hessian = read_hessian(hessian_file)
+atom_charges = read_moldescriptor(moldescriptor, atom_names, atom_types)
+
+wavenumbers, intensities, force_constants, reduced_masses, modes =
+    calculate(atom_masses, atom_coords, atom_charges, hessian)
+
+(
+    round.(wavenumbers[7:end], digits = 3),
+    round.(intensities[7:end], digits = 3),
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">([1492.535, 3669.024, 3784.327], [150.521, 86.433, 164.086])</code></pre><p>For nonlinear molecules such as water, the first six entries correspond to rigid-body translation and rotation. The vibrational modes start at index <code>7</code>.</p><h2 id="Plotting-the-vibrational-spectrum"><a class="docs-heading-anchor" href="#Plotting-the-vibrational-spectrum">Plotting the vibrational spectrum</a><a id="Plotting-the-vibrational-spectrum-1"></a><a class="docs-heading-anchor-permalink" href="#Plotting-the-vibrational-spectrum" title="Permalink"></a></h2><p>The example below turns the H₂O fixture calculation into a simple spectrum plot. The gray sticks are the discrete line intensities, and the blue curve applies a Gaussian broadening with <code>sigma = 45 cm^-1</code>.</p><pre><code class="language-julia hljs">using CairoMakie
+using VibrationalAnalysis
+
+function broaden_spectrum(wavenumbers, intensities; sigma = 45.0, points = 1800)
+    x_min = floor(Int, minimum(wavenumbers) / 100) * 100 - 200
+    x_max = ceil(Int, maximum(wavenumbers) / 100) * 100 + 200
+    x_grid = collect(range(x_min, x_max, length = points))
+    broadened = [
+        sum(intensity * exp(-0.5 * ((x - wavenumber) / sigma)^2) for (wavenumber, intensity) in zip(wavenumbers, intensities))
+        for x in x_grid
+    ]
+    return x_grid, broadened
+end
+
+data = joinpath(pkgdir(VibrationalAnalysis), &quot;test&quot;, &quot;data&quot;)
+structure = joinpath(data, &quot;test_h2o.rst&quot;)
+hessian_file = joinpath(data, &quot;test_hessian_h2o.dat&quot;)
+moldescriptor = joinpath(data, &quot;test_moldescriptor.dat&quot;)
+
+atom_names, atom_masses, atom_coords, atom_types = read_structure(structure)
+hessian = read_hessian(hessian_file)
+atom_charges = read_moldescriptor(moldescriptor, atom_names, atom_types)
+wavenumbers, intensities, force_constants, reduced_masses, modes =
+    calculate(atom_masses, atom_coords, atom_charges, hessian)
+
+vib_wavenumbers = wavenumbers[7:end]
+vib_intensities = intensities[7:end]
+x_grid, broadened = broaden_spectrum(vib_wavenumbers, vib_intensities, sigma = 45.0)
+y_max = 1.1 * max(maximum(vib_intensities), maximum(broadened))
+
+fig = Figure(size = (980, 500))
+ax = Axis(
+    fig[1, 1],
+    xlabel = &quot;Wavenumber (cm⁻¹)&quot;,
+    ylabel = &quot;Intensity (km mol⁻¹)&quot;,
+    xticks = 1500:500:4000,
+    yticks = 0:50:150,
+)
+
+stick_segments = Point2f[]
+for (wavenumber, intensity) in zip(vib_wavenumbers, vib_intensities)
+    push!(stick_segments, Point2f(wavenumber, 0.0))
+    push!(stick_segments, Point2f(wavenumber, intensity))
+end
+
+lines!(ax, x_grid, broadened, color = :steelblue4, linewidth = 4)
+linesegments!(ax, stick_segments, color = (:gray25, 0.9), linewidth = 3)
+
+xlims!(ax, minimum(x_grid), maximum(x_grid))
+ylims!(ax, 0.0, y_max)
+
+save(&quot;h2o-spectrum.svg&quot;, fig)
+
+nothing</code></pre><img src="h2o-spectrum.svg" alt="H₂O vibrational spectrum" /><h2 id="XYZ-input-without-intensities"><a class="docs-heading-anchor" href="#XYZ-input-without-intensities">XYZ input without intensities</a><a id="XYZ-input-without-intensities-1"></a><a class="docs-heading-anchor-permalink" href="#XYZ-input-without-intensities" title="Permalink"></a></h2><pre><code class="language-julia hljs">using VibrationalAnalysis
+
+data = joinpath(pkgdir(VibrationalAnalysis), &quot;test&quot;, &quot;data&quot;)
+structure = joinpath(data, &quot;test_h2o.xyz&quot;)
+hessian_file = joinpath(data, &quot;test_hessian_h2o.dat&quot;)
+
+atom_names, atom_masses, atom_coords, atom_types = read_structure(structure)
+hessian = read_hessian(hessian_file)
+wavenumbers, force_constants, reduced_masses, modes =
+    calculate(atom_masses, atom_coords, hessian)
+
+(
+    atom_types,
+    round.(wavenumbers[7:end], digits = 3),
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">([1, 1, 1], [1492.535, 3669.024, 3784.327])</code></pre><p>For XYZ input, <code>read_structure(...)</code> assigns <code>atom_types = ones(Int, n_atoms)</code> because XYZ files do not encode molecule-type assignments.</p><h2 id="Writing-tabulated-output"><a class="docs-heading-anchor" href="#Writing-tabulated-output">Writing tabulated output</a><a id="Writing-tabulated-output-1"></a><a class="docs-heading-anchor-permalink" href="#Writing-tabulated-output" title="Permalink"></a></h2><pre><code class="language-julia hljs">using VibrationalAnalysis
+
+data = joinpath(pkgdir(VibrationalAnalysis), &quot;test&quot;, &quot;data&quot;)
+structure = joinpath(data, &quot;test_h2o.rst&quot;)
+hessian_file = joinpath(data, &quot;test_hessian_h2o.dat&quot;)
+
+atom_names, atom_masses, atom_coords, atom_types = read_structure(structure)
+hessian = read_hessian(hessian_file)
+wavenumbers, force_constants, reduced_masses, modes =
+    calculate(atom_masses, atom_coords, hessian)
+
+temp = mktempdir()
+outfile = joinpath(temp, &quot;wavenumbers.dat&quot;)
+write_calculate_output(wavenumbers, force_constants, reduced_masses, filename = outfile)
+
+readlines(outfile)[1:4]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">4-element Vector{String}:
+ &quot;# Wavenumbers (cm-1)  Force constants (mdyn Å-1)  Reduced masses (amu)&quot;
+ &quot;-4.99928168e+01\t1.57494693e-03\t1.06952346e+00&quot;
+ &quot;-4.19676644e+01\t1.07893207e-03\t1.03969059e+00&quot;
+ &quot;-3.68818128e+01\t8.44831525e-04\t1.05410823e+00&quot;</code></pre><h2 id="Writing-normal-modes"><a class="docs-heading-anchor" href="#Writing-normal-modes">Writing normal modes</a><a id="Writing-normal-modes-1"></a><a class="docs-heading-anchor-permalink" href="#Writing-normal-modes" title="Permalink"></a></h2><p>Use matrix output when another program will consume the eigenvectors:</p><pre><code class="language-julia hljs">write_modes(modes, filename = &quot;normal_modes.dat&quot;)</code></pre><p>Use XYZ trajectories when you want animated mode displacements:</p><pre><code class="language-julia hljs">write_modes(modes, atom_coords, atom_names, filename = &quot;modes&quot;)</code></pre><p>This creates files such as <code>modes-1.xyz</code>, <code>modes-2.xyz</code>, and so on.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="installation.html">« Installation</a><a class="docs-footer-nextpage" href="input-files.html">Input Files »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Tuesday 9 June 2026 11:35">Tuesday 9 June 2026</span>. Using Julia version 1.10.11.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
