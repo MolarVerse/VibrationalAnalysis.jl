@@ -9,11 +9,11 @@ authors:
   family-names: Gamper
   given-names: Jakob
   orcid: 0000-0003-1136-2536
-date-released: '2024-03-18'
+date-released: '2026-06-09'
 doi: 10.5281/zenodo.10829271
 license:
 - mit
 title: VibrationalAnalysis.jl
 type: software
-version: 0.1.5
+version: 0.3.2
 url: https://github.com/MolarVerse/VibrationalAnalysis.jl
