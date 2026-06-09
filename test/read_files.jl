@@ -1,4 +1,4 @@
-using VibrationalAnalysis: read_rst, read_xyz, read_hessian, read_moldescriptor
+using VibrationalAnalysis: read_structure, read_rst, read_xyz, read_hessian, read_moldescriptor
 using Test
 
 # Test reading RST files src/read_files.jl
@@ -55,6 +55,16 @@ end
         0.68120631717 -0.49583217141 -0.52277201300
     ]
     @test atom_types == ones(Int64, 3)
+end
+
+@testset "Read Structure File" begin
+    rst = read_structure("data/test_h2o.rst")
+    xyz = read_structure("data/test_h2o.xyz")
+    xyz_explicit = read_structure("data/test_h2o.xyz", format = :xyz)
+    @test rst == read_rst("data/test_h2o.rst")
+    @test xyz == read_xyz("data/test_h2o.xyz")
+    @test xyz_explicit == read_xyz("data/test_h2o.xyz")
+    @test_throws ErrorException read_structure("data/test_h2o.rst", format = :invalid)
 end
 
 @testset "Read Hessian File Exceptions" begin

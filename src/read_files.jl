@@ -1,4 +1,4 @@
-export read_rst, read_xyz, read_hessian, read_moldescriptor
+export read_structure, read_rst, read_xyz, read_hessian, read_moldescriptor
 
 """
 	read_rst(rst_file::String) -> atom_names::Vector{String}, atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_types::Vector{Int64}
@@ -132,20 +132,83 @@ function read_xyz(xyz_file::String)
 	return atom_names, atom_masses, Matrix(hcat(atom_coords...)'), ones(Int64, number_atoms)
 end
 
+function structure_format(structure_file::String; format::Symbol = :auto)
+	if format == :auto
+		return lowercase(splitext(structure_file)[2]) == ".xyz" ? :xyz : :rst
+	elseif format in (:rst, :xyz)
+		return format
+	end
+
+	error("Unsupported structure format. Use :auto, :rst or :xyz.")
+end
+
 """
-	read_structure(structure_file::String) -> atom_names::Vector{String}, atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_types::Vector{Int64}
+	read_structure(structure_file::String; format::Symbol = :auto) -> atom_names::Vector{String}, atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_types::Vector{Int64}
 
 Reads either a restart file or a single-structure XYZ file.
 
 # Arguments
 - `structure_file::String`: The restart or XYZ file.
+- `format::Symbol`: The structure format. Use `:auto`, `:rst` or `:xyz`.
 """
-function read_structure(structure_file::String)
-	if lowercase(splitext(structure_file)[2]) == ".xyz"
+function read_structure(structure_file::String; format::Symbol = :auto)
+	if structure_format(structure_file, format = format) == :xyz
 		return read_xyz(structure_file)
 	end
 
 	return read_rst(structure_file)
+end
+
+function moldescriptor_types(moldescriptor_file::String)
+
+	# Check if the file exists and
+	if !isfile(moldescriptor_file)
+		error("The moldescriptor file does not exist.")
+	end
+
+	# Check if the file is empty
+	if filesize(moldescriptor_file) == 0
+		error("The moldescriptor file is empty.")
+	end
+
+	# Delete empty lines, lines containing whitespaces and comments
+	moldescriptor_lines = filter(x -> x != "" && occursin(r"\w+", x) && !occursin(r"#", x), readlines(moldescriptor_file))
+
+	# Strip the moldescriptor lines that are not lines of 3 strings
+	moldescriptor_lines = filter(x -> length(split(x)) == 3, moldescriptor_lines)
+
+	# Check if the moldescriptor lines are empty
+	if length(moldescriptor_lines) == 0
+		error("The moldescriptor file is not a moldescriptor file.")
+	end
+
+	# Check if the moldescriptor file contains only lines of 3 strings
+	# First is a string, second is an integer and third is a float
+	for line in moldescriptor_lines
+		if !(occursin(r"\w+", split(line)[1]) && occursin(r"\d+", split(line)[2]) && occursin(r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?", split(line)[3]))
+			error("The moldescriptor file contains lines that are not of the form: string integer float.")
+		end
+	end
+
+	mol_types = Vector{Dict{String, Float64}}()
+	i = 1
+
+	while i <= length(moldescriptor_lines)
+		number_atoms = parse(Int64, split(moldescriptor_lines[i])[2])
+		molecule = moldescriptor_lines[i+1:i+number_atoms]
+		dict = Dict{String, Float64}()
+		for atom in molecule
+			dict[lowercase(split(atom)[1])] = parse(Float64, split(atom)[3])
+		end
+		push!(mol_types, dict)
+		i = i + number_atoms + 1
+	end
+
+	return mol_types
+end
+
+function moldescriptor_molecule_count(moldescriptor_file::String)
+	return length(moldescriptor_types(moldescriptor_file))
 end
 
 """
@@ -203,47 +266,10 @@ Reads a moldescriptor file and returns atom_charges.
 """
 function read_moldescriptor(moldescriptor_file::String, atom_names::Vector{String}, atom_types::Vector{Int64})
 
-	# Check if the file exists and
-	if !isfile(moldescriptor_file)
-		error("The moldescriptor file does not exist.")
-	end
+	mol_types = moldescriptor_types(moldescriptor_file)
 
-	# Check if the file is empty
-	if filesize(moldescriptor_file) == 0
-		error("The moldescriptor file is empty.")
-	end
-
-	# Delete empty lines, lines containing whitespaces and comments
-	moldescriptor_lines = filter(x -> x != "" && occursin(r"\w+", x) && !occursin(r"#", x), readlines(moldescriptor_file))
-
-	# Strip the moldescriptor lines that are not lines of 3 strings
-	moldescriptor_lines = filter(x -> length(split(x)) == 3, moldescriptor_lines)
-
-	# Check if the moldescriptor lines are empty
-	if length(moldescriptor_lines) == 0
-		error("The moldescriptor file is not a moldescriptor file.")
-	end
-
-	# Check if the moldescriptor file contains only lines of 3 strings
-	# First is a string, second is an integer and third is a float
-	for line in moldescriptor_lines
-		if !(occursin(r"\w+", split(line)[1]) && occursin(r"\d+", split(line)[2]) && occursin(r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?", split(line)[3]))
-			error("The moldescriptor file contains lines that are not of the form: string integer float.")
-		end
-	end
-
-	mol_types = Vector()
-	i = 1
-
-	while i <= length(moldescriptor_lines)
-		number_atoms = parse(Int64, split(moldescriptor_lines[i])[2])
-		molecule = moldescriptor_lines[i+1:i+number_atoms]
-		dict = Dict()
-		for atom in molecule
-			dict[lowercase(split(atom)[1])] = parse(Float64, split(atom)[3])
-		end
-		push!(mol_types, dict)
-		i = i + number_atoms + 1
+	if any(atom_type < 1 || atom_type > length(mol_types) for atom_type in atom_types)
+		error("The atom types are incompatible with the moldescriptor file.")
 	end
 
 	atom_charges = [mol_types[atom_types[i]][lowercase(atom_names[i])] for i in 1:length(atom_names)]

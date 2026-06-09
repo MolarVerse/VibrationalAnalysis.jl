@@ -9,7 +9,7 @@ Calculate the wavenumbers, intensities, force constants, reduced masses and eige
 
 # Args
 
-- `restart`: The restart or XYZ structure file.
+- `structure`: The restart or XYZ structure file.
 - `hessian`: The hessian file.
 
 # Options
@@ -24,13 +24,15 @@ Calculate the wavenumbers, intensities, force constants, reduced masses and eige
 - `--modes`: Write the modes in xyz format. If not specified, the modes will not be written.
 
 """
-Comonicon.@main function vibrationalanalysis(restart::String, hessian::String; unit = "kcal", moldescriptor = nothing, output = nothing, normal_modes = nothing, modes::Bool = false)
+Comonicon.@main function vibrationalanalysis(structure::String, hessian::String; unit = "kcal", moldescriptor = nothing, output = nothing, normal_modes = nothing, modes::Bool = false)
 
 	# Check if the unit is valid
 	wavenumber = check_unit(unit)
 
+	input_format = structure_format(structure)
+
 	# Read structure file
-	atom_names, atom_masses, atom_coords, atom_types = read_structure(restart)
+	atom_names, atom_masses, atom_coords, atom_types = read_structure(structure, format = input_format)
 
 	# Read the hessian
 	hessian = read_hessian(hessian)
@@ -44,6 +46,9 @@ Comonicon.@main function vibrationalanalysis(restart::String, hessian::String; u
 		# write wavenumbers, force constants, reduced masses
 		write_calculate_output(wavenumbers, force_constants, reduced_masses, filename = output)
 	else
+		if input_format == :xyz && moldescriptor_molecule_count(moldescriptor) != 1
+			error("XYZ input requires a moldescriptor file with exactly one molecule type because XYZ files do not encode molecule-type assignments.")
+		end
 
 		# Read the atom charges
 		atom_charges = read_moldescriptor(moldescriptor, atom_names, atom_types)
