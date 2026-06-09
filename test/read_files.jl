@@ -1,4 +1,4 @@
-using VibrationalAnalysis: read_rst, read_hessian, read_moldescriptor
+using VibrationalAnalysis: read_rst, read_xyz, read_hessian, read_moldescriptor
 using Test
 
 # Test reading RST files src/read_files.jl
@@ -35,6 +35,26 @@ end
         0.832947 -0.480902 -0.198082
     ]
     @test atom_types == [2, 2, 2, 2]
+end
+
+@testset "Read XYZ File Exceptions" begin
+    @test_throws ErrorException read_xyz("data/not_a_file.xyz")
+    @test_throws ErrorException read_xyz("data/test_empty.xyz")
+    @test_throws ErrorException read_xyz("data/test_invalid.xyz")
+    @test_throws ErrorException read_xyz("data/test_multiframe.xyz")
+end
+
+@testset "Read XYZ File - h2o" begin
+    atom_names, atom_masses, atom_coords, atom_types = read_xyz("data/test_h2o.xyz")
+    @test atom_names == ["O", "H", "H"]
+    @test atom_masses == [15.9994, 1.00794, 1.00794]
+    @test atom_coords isa Matrix{Float64}
+    @test atom_coords == [
+        -0.01294293652 -0.00022738404 -0.00072569662
+        0.43396012267 0.59193103593 0.66981595463
+        0.68120631717 -0.49583217141 -0.52277201300
+    ]
+    @test atom_types == ones(Int64, 3)
 end
 
 @testset "Read Hessian File Exceptions" begin

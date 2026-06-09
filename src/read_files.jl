@@ -1,4 +1,4 @@
-export read_rst, read_hessian, read_moldescriptor
+export read_rst, read_xyz, read_hessian, read_moldescriptor
 
 """
 	read_rst(rst_file::String) -> atom_names::Vector{String}, atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_types::Vector{Int64}
@@ -43,6 +43,109 @@ function read_rst(rst_file::String)
 	atom_coords = Matrix(hcat(atom_coords...)') # Transpose the matrix
 
 	return atom_names, atom_masses, atom_coords, atom_types
+end
+
+"""
+	read_xyz(xyz_file::String) -> atom_names::Vector{String}, atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_types::Vector{Int64}
+
+Reads a standard single-structure XYZ file and returns a tuple of atom names,
+masses, coordinates, and atom types.
+
+# Arguments
+- `xyz_file::String`: The XYZ file.
+"""
+function read_xyz(xyz_file::String)
+
+	# Check if the file exists and
+	if !isfile(xyz_file)
+		error("The xyz file does not exist.")
+	end
+
+	# Check if the file is empty
+	if filesize(xyz_file) == 0
+		error("The xyz file is empty.")
+	end
+
+	# Read the xyz file
+	xyz_lines = readlines(xyz_file)
+
+	# Check if the first line contains the number of atoms
+	if isempty(xyz_lines)
+		error("The xyz file is empty.")
+	end
+
+	number_atoms = try
+		parse(Int64, strip(xyz_lines[1]))
+	catch
+		error("The xyz file does not start with the number of atoms.")
+	end
+
+	if number_atoms <= 0
+		error("The xyz file must contain at least one atom.")
+	end
+
+	# XYZ files contain an atom-count line, a comment line and one line per atom
+	if length(xyz_lines) < number_atoms + 2
+		error("The xyz file does not contain the expected number of atom lines.")
+	end
+
+	atom_lines = xyz_lines[3:number_atoms+2]
+	trailing_lines = xyz_lines[number_atoms+3:end]
+
+	if any(isempty(strip(line)) for line in atom_lines)
+		error("The xyz file contains empty atom lines.")
+	end
+
+	if any(!isempty(strip(line)) for line in trailing_lines)
+		error("The xyz file contains more than one structure.")
+	end
+
+	atom_names = Vector{String}()
+	atom_masses = Vector{Float64}()
+	atom_coords = Vector{Vector{Float64}}()
+
+	for line in atom_lines
+		atom_line = split(line)
+
+		if length(atom_line) < 4
+			error("The xyz file contains atom lines that are not of the form: string float float float.")
+		end
+
+		atom_name = String(atom_line[1])
+		atom_key = lowercase(atom_name)
+
+		if !haskey(masses, atom_key)
+			error("The xyz file contains an unknown atom symbol.")
+		end
+
+		coords = try
+			parse.(Float64, atom_line[2:4])
+		catch
+			error("The xyz file contains atom lines that are not of the form: string float float float.")
+		end
+
+		push!(atom_names, atom_name)
+		push!(atom_masses, masses[atom_key])
+		push!(atom_coords, coords)
+	end
+
+	return atom_names, atom_masses, Matrix(hcat(atom_coords...)'), ones(Int64, number_atoms)
+end
+
+"""
+	read_structure(structure_file::String) -> atom_names::Vector{String}, atom_masses::Vector{Float64}, atom_coords::Matrix{Float64}, atom_types::Vector{Int64}
+
+Reads either a restart file or a single-structure XYZ file.
+
+# Arguments
+- `structure_file::String`: The restart or XYZ file.
+"""
+function read_structure(structure_file::String)
+	if lowercase(splitext(structure_file)[2]) == ".xyz"
+		return read_xyz(structure_file)
+	end
+
+	return read_rst(structure_file)
 end
 
 """
